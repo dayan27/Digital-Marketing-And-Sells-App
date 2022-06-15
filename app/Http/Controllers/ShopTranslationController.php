@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrginalProductResource;
+use App\Http\Resources\OrginalShopTranslationResource;
+use App\Models\Shop;
 use App\Models\ShopTranslation;
 use Illuminate\Http\Request;
 
@@ -31,12 +34,16 @@ class ShopTranslationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ShopTranslation  $shopTranslation
+     * @param  \Illuminate\Http\Request  $request
+     * @param  shop_id
      * @return \Illuminate\Http\Response
      */
-    public function show(ShopTranslation $shopTranslation)
+    public function show(Request $request, $shop_id)
     {
-        //
+        $shop=Shop::find($shop_id);
+        $shop->translate($request->language);
+      // return $productTrans;
+      return new OrginalShopTranslationResource($shop);
     }
 
     /**
@@ -46,9 +53,30 @@ class ShopTranslationController extends Controller
      * @param  \App\Models\ShopTranslation  $shopTranslation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ShopTranslation $shopTranslation)
+    public function update(Request $request, $id)
     {
-        //
+        $shop= Shop::find($id);
+        $shop_data = [
+            $request->language => [
+                'shop_name'=>$request->shop_name,
+                'zone'=>$request->zone,
+                'region'=>$request->region,
+                'woreda'=>$request->woreda,
+                'city'=>$request->city,
+                // 'description'=>$request->description,
+            ],
+         ];
+     
+         $shop=$shop->update($shop_data);
+         if($shop){
+            return response()->json('sucessfully added translation',200); 
+
+         }
+         else{
+            return response()->json('something want wrong',500); 
+
+         }
+
     }
 
     /**

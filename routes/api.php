@@ -10,6 +10,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductTranslationController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopTranslationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,7 +41,7 @@ Route::apiResource('/languages',LanguageController::class);
 Route::apiResource('/product_translations',ProductTranslationController::class);
 Route::post('/add_products/{id}',[ShopController::class,'addProducts']);
 Route::get('/search',[ProductController::class,'search']);
-
+Route::apiResource('/shop_translations',ShopTranslationController::class);
 
 
 Route::post('/login',[LoginController ::class,'login']);

@@ -104,10 +104,6 @@ class ManagerController extends Controller
     //    foreach(){
         $manager->phone_numbers()->delete();
         $manager->delete();
-        return response()->json('sucessfully deleted',200); 
-
-
-
-       
+        return response()->json('sucessfully deleted',200);     
     }
 }

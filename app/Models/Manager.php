@@ -18,6 +18,7 @@ class Manager extends Model
         'manager_zone',
         'manager_woreda',
         'manager_city',
+        'manager_kebele',
         'house_no',
         'role',
 

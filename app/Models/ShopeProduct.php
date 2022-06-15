@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ShopeProduct extends Model
+class ShopeProduct extends Model 
 {
     use HasFactory;
     public $fillable=[

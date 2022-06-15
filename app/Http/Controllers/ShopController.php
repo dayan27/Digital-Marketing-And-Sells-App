@@ -20,7 +20,8 @@ class ShopController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *store all together the manager,phone number
+     shop and its shop attribute translation
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -73,6 +74,7 @@ class ShopController extends Controller
      */
     public function update(Request $request, shop $shop)
     {
+    
        return $shop->update($request->all());
     }
 
