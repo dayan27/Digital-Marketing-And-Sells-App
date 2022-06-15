@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Manager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class LoginController extends Controller
 
         ]);
 
-        $user=Manager::where('email',$request->email)->first();
+        $user=Account::where('user_name',$request->email)->first();
         if (! $user ) {
             return response()->json([
                 'message'=>' incorrect email and password',

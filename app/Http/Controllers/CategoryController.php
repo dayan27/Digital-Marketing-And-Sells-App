@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductListResource;
 use App\Models\Category;
+use App\Models\Manager;
 use Illuminate\Http\Request;
+
 
 class CategoryController extends Controller
 {
@@ -26,7 +28,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+//         $role = Role::create(['name' => 'writer']);
+//    return $permission = Permission::create(['name' => 'edit articles']);
          return Category::create($request->all());
+        //  $id=7;
+        //  $manager=Manager::find($id);
+        //  $manager->assignRole
+
     }
 
     /**

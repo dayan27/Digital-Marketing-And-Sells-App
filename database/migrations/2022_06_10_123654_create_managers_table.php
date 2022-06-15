@@ -24,7 +24,8 @@ class CreateManagersTable extends Migration
             $table->string("manager_city");
             $table->string("manager_kebele");
             $table->string("house_no");
-            $table->string("role");
+            $table->foreignId('account_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->timestamps();
         });
     }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ManagerController extends Controller
 {
@@ -27,7 +29,10 @@ class ManagerController extends Controller
     public function store(Request $request)
     {
         // return $request->all();
-       $manager= Manager::create($request->all());
+        $account=Account::create(['user_name'=>$request->email,'password'=>Hash::make($request->password) ]);
+        $data=$request->all();
+        $data['account_id']=$account->id;
+        $manager= Manager::create($data);
        if($manager){
         $phone_numbers=[];
         $phoneNumbers=$request->phone_numbers;

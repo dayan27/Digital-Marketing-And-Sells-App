@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -48,4 +50,8 @@ Route::post('/login',[LoginController ::class,'login']);
 //->middleware('verified');
 Route::post('/forgot',[ForgotPasswordController::class,'forgot']);
 Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
+
+
+Route::apiResource('/roles',RoleController::class);
+Route::apiResource('/permissions',PermissionController::class);
 
