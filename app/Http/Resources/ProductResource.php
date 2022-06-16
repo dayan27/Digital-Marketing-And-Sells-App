@@ -19,16 +19,17 @@ class ProductResource extends JsonResource
             'name'=>$this->name,
             'model'=>$this->model,
             'brand'=>$this->brand,
-            'warranty'=>$this->warranty,
-            'function'=>$this->function,
-            'application'=>$this->application,
-            'material'=>$this->material,
-            'effciency'=>$this->effciency,
+            'weight'=>$this->weight,
+            // 'function'=>$this->function,
+            // 'application'=>$this->application,
+            // 'material'=>$this->material,
             'maximum_supply_voltage'=>$this->maximum_supply_voltage,
             'maximum_current_power'=>$this->maximum_current_power,
             'price'=>$this->price,
             'qty'=>$this->qty,
             'description'=>$this->description,
+            'detail'=>$this->detail,
+
             'category_id'=>$this->category_id,
             'images'=>ImageResource::collection($this->images) ?? null
 

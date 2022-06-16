@@ -72,10 +72,9 @@ class ProductTranslationController extends Controller
         $product_data = [
             $request->language => [
                 'name'=>$request->name,
-                'warranty'=>$request->warranty,
-                'function'=>$request->function,
-                'application'=>$request->application,
                 'description'=>$request->description,
+                'detail'=>$request->detail,
+                
             ],
          ];
      

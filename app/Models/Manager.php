@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class Manager extends Model
+class Manager extends Model 
 {
-    use HasFactory,HasApiTokens;
+    use HasFactory,HasApiTokens,Notifiable;
     use HasRoles;
 
     public $fillable=[

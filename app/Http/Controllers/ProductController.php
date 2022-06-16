@@ -132,6 +132,23 @@ class ProductController extends Controller
         return response()->json('sucessfully deleted',200); 
 
     }
+    /**
+     * add featured products
+     * 
+     */
+    public function addFeaturedProduct(Request $request,$product_id){
+      $product=Product::find($product_id);  
+      $product->is_featured=$request->is_featured;
+      $success=$product->save();
+      if($success){
+        return response()->json('successful operation!',201);
+      }else{
+        return response()->json('error while adding featured product ',401);
+      }
+
+      }
+
+    }
 
     
-}
+

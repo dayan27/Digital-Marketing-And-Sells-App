@@ -19,7 +19,7 @@ class ProductListResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'model'=>$this->model,
-            //'brand'=>$this->brand,
+            'brand'=>$this->brand,
            // 'warranty'=>$this->warranty,
             //'function'=>$this->function,
             //'application'=>$this->application,

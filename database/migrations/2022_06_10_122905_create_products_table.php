@@ -18,13 +18,14 @@ class CreateProductsTable extends Migration
             //$table->string("name");
             //   $table->string("type");
             $table->boolean('is_active')->nullable()->default(1);
+            $table->boolean('is_featured')->default(0);
             $table->string("model");
            // $table->string("warranty");
             $table->string("brand");
            // $table->string("function");
            // $table->string("application");
-            $table->string("material");
-            $table->string("effciency");
+          //  $table->string("material");
+          //  $table->string("effciency");
             $table->string("maximum_supply_voltage");
             $table->string("maximum_current_power");
           //  $table->string('description');
