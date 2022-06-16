@@ -2,10 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Models\ProductTranslation;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrginalProductResource extends JsonResource
+class DetailProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,21 +16,21 @@ class OrginalProductResource extends JsonResource
     {
         return[
             'id'=>$this->id,
+            'name'=>$this->name,
             'model'=>$this->model,
             'brand'=>$this->brand,
+            'weight'=>$this->weight,
+            'discount'=>$this->discount,
             'maximum_supply_voltage'=>$this->maximum_supply_voltage,
             'maximum_current_power'=>$this->maximum_current_power,
             'price'=>$this->price,
             'qty'=>$this->qty,
+            'warranty'=>$this->warranty,
+            'description'=>$this->description,
+            'detail'=>$this->detail,
             'category_id'=>$this->category_id,
-            'name'=>$this->translate(request()->language)->name,
-            // 'warranty'=>$this->translate(request()->language)->warranty,
-            // 'function'=>$this->translate(request()->language)->function,
-            'detail'=>$this->translate(request()->language)->detail,
-            'description'=>$this->translate(request()->language)->description,
+            'reviews'=>ReviewResource::collection($this->reviews),
             'images'=>ImageResource::collection($this->images) ?? null,
-          //  'translation'=>new ProductTranslationResource( $this->translate(request()->language))
-            
 
 
         ];

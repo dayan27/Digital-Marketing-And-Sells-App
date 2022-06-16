@@ -16,19 +16,15 @@ class FeaturedProductResource extends JsonResource
     {
         return[
             'id'=>$this->id,
-            'name'=>$this->name,
-           
+            'name'=>$this->name,  
             'price'=>$this->price,
             'description'=>$this->description,
             'number_of_review'=>$this->reviews()->count(),
-            'five star'=>$this->reviews()->where('rate',5)->count(),
-            'four star'=>$this->reviews()->where('rate',4)->count(),
-            'three star'=>$this->reviews()->where('rate',3)->count(),
-            'two star'=>$this->reviews()->where('rate',2)->count(),
-            'one star'=>$this->reviews()->where('rate',2)->count(),
-
-
-
+            'five_star'=>$this->reviews()->where('rate',5)->count(),
+            'four_star'=>$this->reviews()->where('rate',4)->count(),
+            'three_star'=>$this->reviews()->where('rate',3)->count(),
+            'two_star'=>$this->reviews()->where('rate',2)->count(),
+            'one_star'=>$this->reviews()->where('rate',2)->count(),
             'images'=> new ImageResource($this->images()->first()) ?? null
 
 

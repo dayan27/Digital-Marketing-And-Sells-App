@@ -56,7 +56,7 @@ class ProductTranslationController extends Controller
         $product=Product::find($product_id);
          $product->translate($request->language);
        // return $productTrans;
-       return new OrginalProductResource($product);
+       return new ProductTranslationResource($product);
     }
 
     /**

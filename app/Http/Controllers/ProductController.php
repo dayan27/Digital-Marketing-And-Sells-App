@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DetailProductResource;
 use App\Http\Resources\FeaturedProductResource;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
@@ -151,13 +152,19 @@ class ProductController extends Controller
 
       }
       /**
-       * 
+       * display all featured products
        */
       public function getFeaturedProducts(){
        $product= Product::where('is_featured','1')->with('reviews')->get();
         return FeaturedProductResource::collection($product);
       }
 
+      public function getFeaturedProductDetail($product_id){
+        $product=Product::find($product_id)->load('reviews');
+        return new DetailProductResource($product);
+        
+
+      }
 
     }
 

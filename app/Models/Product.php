@@ -20,6 +20,7 @@ class Product extends Model implements TranslatableContract
         'maximum_supply_voltage',
         'maximum_current_power',
         'price',
+        'discount',
         'qty',
         'weight',
         'date_of_production', 
