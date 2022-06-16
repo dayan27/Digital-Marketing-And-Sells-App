@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ProductTranslation extends Model
 {
     use HasFactory;
-    protected $fillable = ['name','detail','description'];
+    protected $fillable = ['name','warranty','detail','description'];
     public $timestamps = false;
 
    

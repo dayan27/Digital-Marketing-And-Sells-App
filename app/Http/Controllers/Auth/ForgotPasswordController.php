@@ -31,12 +31,12 @@ class ForgotPasswordController extends Controller
             $tokenData = DB::table('password_resets')
             ->where('email', $request->email)->first();
 
-            if ($this->sendResetEmail($request->email, $tokenData->token)) {
-                return response()->json('link sent');
+            if( $this->sendResetEmail($request->email, $tokenData->token)){
+               return response()->json('link sent');
             } 
-            // else {
-            //         return response()->json('link not sent');
-            //        }
+            else {
+                    return response()->json('link not sent');
+                 }
     }
 
     private function sendResetEmail($email, $token)
@@ -47,9 +47,9 @@ class ForgotPasswordController extends Controller
         //Generate, the password reset link. The token generated is embedded in the link
         $link = env('FRONTEND_URL') . '/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
 
-            try {
+           try {
             //Here send the link with CURL with an external email API
-            $user->notify(new NewPasswordNotification($link,$token));
+          return  $user->notify(new NewPasswordNotification($link,$token));
                 return true;
             } catch (\Exception $e) {
                 return false;

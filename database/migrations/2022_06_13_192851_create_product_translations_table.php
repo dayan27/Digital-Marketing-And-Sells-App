@@ -18,11 +18,10 @@ class CreateProductTranslationsTable extends Migration
             $table->string('locale');
             $table->string('name');
             // $table->string('function');
-            // $table->string('warranty');
+            $table->string('warranty'); 
             // $table->string('application');
             $table->string('description');
             $table->text('detail');
-
             $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->unique(['product_id','locale']);
             $table->timestamps();

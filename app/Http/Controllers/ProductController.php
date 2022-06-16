@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FeaturedProductResource;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
@@ -134,7 +135,9 @@ class ProductController extends Controller
     }
     /**
      * add featured products
-     * 
+     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Product  $product
+
      */
     public function addFeaturedProduct(Request $request,$product_id){
       $product=Product::find($product_id);  
@@ -147,6 +150,14 @@ class ProductController extends Controller
       }
 
       }
+      /**
+       * 
+       */
+      public function getFeaturedProducts(){
+       $product= Product::where('is_featured','1')->with('reviews')->get();
+        return FeaturedProductResource::collection($product);
+      }
+
 
     }
 

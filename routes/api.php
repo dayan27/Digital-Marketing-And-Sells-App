@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/categories',CategoryController::class);
 Route::apiResource('/products',ProductController::class);
+Route::get('/get_featured_products',[ProductController::class,'getFeaturedProducts']);
+
 Route::apiResource('/images',ImageController::class);
 Route::apiResource('/shops',ShopController::class);
 Route::apiResource('/managers',ManagerController::class);

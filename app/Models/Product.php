@@ -10,11 +10,12 @@ class Product extends Model implements TranslatableContract
 {
     use HasFactory;
     use Translatable;    
-    public $translatedAttributes = ['name','description','detail',];
+    public $translatedAttributes = ['name','warranty','description','detail',];
     
     public $fillable=[
         'name',
         'model',
+        'warranty',
         'brand',
         'maximum_supply_voltage',
         'maximum_current_power',

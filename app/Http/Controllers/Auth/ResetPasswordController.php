@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Manager;
 use App\Notifications\SuccessEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class ResetPasswordController extends Controller
             if (!$tokenData)
             return view('auth.passwords.email');
 
-            $user = Admin::where('email', $tokenData->email)->first();
+            $user = Manager::where('email', $tokenData->email)->first();
         // Redirect the user back if the email is invalid
             if (!$user)
             return response()->json('not valid user',401);
