@@ -18,10 +18,9 @@ class NewPasswordNotification extends Notification
      *
      * @return void
      */
-    public function __construct($url,$token)
+    public function __construct($url)
     {
         $this->url=$url;
-        $this->token=$token;
 
     }
 
@@ -47,9 +46,9 @@ class NewPasswordNotification extends Notification
     {
         return (new MailMessage)
                     ->line('Password Reset code.')
-                   // ->action('Notification Action', url($this->url))
-                    ->line('Thank you for using our application!')
-                    ->line('Your Reset code is '. $this->token);
+                    ->action('Notification Action', url($this->url))
+                    ->line('Thank you for using our application!');
+                    // ->line('Your Reset code is '. $this->token);
     }
 
 

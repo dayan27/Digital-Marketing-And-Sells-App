@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\NewPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
@@ -41,4 +42,14 @@ class Manager extends Model
         return $this->hasOne(Shop::class);
     }
 
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'https://10.161.176.171:8080/reset-password?token='.$token;
+        $this->notify(new NewPasswordNotification($url));
+    }
+
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new VerifyEmailNotification());
+    // }
 }

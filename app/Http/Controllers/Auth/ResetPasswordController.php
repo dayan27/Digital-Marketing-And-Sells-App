@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Manager;
 use App\Notifications\SuccessEmail;
@@ -33,7 +34,7 @@ class ResetPasswordController extends Controller
             if (!$tokenData)
             return view('auth.passwords.email');
 
-            $user = Manager::where('email', $tokenData->email)->first();
+            $user = Account::where('user_name', $tokenData->email)->first();
         // Redirect the user back if the email is invalid
             if (!$user)
             return response()->json('not valid user',401);
@@ -49,29 +50,29 @@ class ResetPasswordController extends Controller
             ->delete();
 
             //Send Email Reset Success Email
-            if ($this->sendSuccessEmail($tokenData->email)) {
+            // if ($this->sendSuccessEmail($tokenData->email)) {
 
-                $token=$user->createToken('auth_token')->plainTextToken;
+            //     $token=$user->createToken('auth_token')->plainTextToken;
                 return response()->json([
                     'access_token'=>$token,
-                    'user'=>$user->load('role'),
+                   'user'=>$user,
                 ],200);
-               // return response()->json('successfuly reset ur password',200);
-            } else {
-                return response()->json('try again',401);
-            }
+            //    // return response()->json('successfuly reset ur password',200);
+            // } else {
+            //     return response()->json('try again',401);
+            // }
 
 
 }
-  private function sendSuccessEmail($email){
+//   private function sendSuccessEmail($email){
 
-     try {
-        $user = Admin::where('email', $email)->first();
-        $user->notify(new SuccessEmail());
-        return true;
+//      try {
+//         $user = Admin::where('email', $email)->first();
+//         $user->notify(new SuccessEmail());
+//         return true;
 
-     } catch (\Throwable $th) {
-        return false;
-     }
-  }
+//      } catch (\Throwable $th) {
+//         return false;
+//      }
+//   }
 }

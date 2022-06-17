@@ -46,7 +46,7 @@ Route::apiResource('/product_translations',ProductTranslationController::class);
 Route::post('/add_products/{id}',[ShopController::class,'addProducts']);
 Route::post('/add_featured_products/{id}',[ProductController::class,'addFeaturedProduct']);
 Route::get('/get_featured_product_detail/{id}',[ProductController::class,'getFeaturedProductDetail']);
-
+Route::get('/shop_products/{id}',[ShopController::class,'getShopProducts']);
 
 Route::get('/search',[ProductController::class,'search']);
 Route::apiResource('/shop_translations',ShopTranslationController::class);

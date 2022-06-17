@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ShopProductResource;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
 use App\Models\shop;
@@ -107,6 +108,17 @@ class ShopController extends Controller
           
         }
         return $products;
+
+    }
+    /**
+     * get all product of a specific shop
+     * 
+     */
+
+    public function getShopProducts($shop_id){
+       $shop=Shop::find($shop_id); 
+    //    return $shop->load('products','manager');
+      return new ShopProductResource( $shop->load('products','manager'));
 
     }
 }

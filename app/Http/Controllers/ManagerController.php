@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ManagerResource;
 use App\Models\Account;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
@@ -17,7 +18,9 @@ class ManagerController extends Controller
      */
     public function index()
     {
-       return Manager::all()->load('phone_numbers');
+       $manager= Manager::all();
+      return ManagerResource::collection($manager);
+
     }
 
     /**
@@ -93,7 +96,8 @@ class ManagerController extends Controller
          $manager['phone_numbers']=$phone_numbers;
        
       }
-         return $manager;
+         //return $manager;
+         return new ManagerResource($manager->load('phone_numbers'));
     }
 
 

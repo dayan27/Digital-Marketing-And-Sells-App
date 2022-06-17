@@ -32,10 +32,10 @@ class ForgotPasswordController extends Controller
             ->where('email', $request->email)->first();
 
             if( $this->sendResetEmail($request->email, $tokenData->token)){
-               return response()->json('link sent');
+               return response()->json(['link sent'],200);
             } 
             else {
-                    return response()->json('link not sent');
+                    return response()->json(['link not sent',404]);
                  }
     }
 
@@ -45,11 +45,11 @@ class ForgotPasswordController extends Controller
         $user = Manager::where('email', $email)->first();
 
         //Generate, the password reset link. The token generated is embedded in the link
-        $link = env('FRONTEND_URL') . '/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
+        $link = 'http://10.161.176.171:8080/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
 
            try {
             //Here send the link with CURL with an external email API
-          return  $user->notify(new NewPasswordNotification($link,$token));
+            $user->notify(new NewPasswordNotification($link));
                 return true;
             } catch (\Exception $e) {
                 return false;
