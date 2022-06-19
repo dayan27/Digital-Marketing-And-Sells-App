@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductDistributionDatasTable extends Migration
+class CreateProductDistributionDataTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateProductDistributionDatasTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_distribution_datas', function (Blueprint $table) {
+        Schema::create('product_distribution_data', function (Blueprint $table) {
             $table->id();
-            $table->date('shipped_date');
             $table->integer('qty');
-          //confirm the products are well and safe
-            $table->string('status')->default('pending') ;   
+            $table->date('provided_date');
+            $table->string('status')->default('pending');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('shop_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreateProductDistributionDatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_distribution_datas');
+        Schema::dropIfExists('product_distribution_data');
     }
 }

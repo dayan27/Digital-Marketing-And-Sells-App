@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AllProductResource;
 use App\Http\Resources\DetailProductResource;
 use App\Http\Resources\FeaturedProductResource;
 use App\Http\Resources\ProductListResource;
@@ -158,6 +159,9 @@ class ProductController extends Controller
        $product= Product::where('is_featured','1')->with('reviews')->get();
         return FeaturedProductResource::collection($product);
       }
+      /**
+       * display a detail of certian product
+       */
 
       public function getFeaturedProductDetail($product_id){
         $product=Product::find($product_id)->load('reviews');
@@ -165,6 +169,13 @@ class ProductController extends Controller
         
 
       }
+       /**
+       * display all  products of certian category
+       */
+      public function getProducts($category_id){
+         $product= Product::where('category_id',$category_id)->with('reviews')->get();
+         return AllProductResource::collection($product);
+       }
 
     }
 

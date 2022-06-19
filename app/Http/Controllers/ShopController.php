@@ -103,7 +103,7 @@ class ShopController extends Controller
             //return $product['qty'];
             // return $product['id'];
             $shop->products()->attach($product['id'],['qty'=>$product['qty']]);
-
+        
             $products[]['product']= $shop->products;
           
         }

@@ -29,6 +29,11 @@ class DetailProductResource extends JsonResource
             'description'=>$this->description,
             'detail'=>$this->detail,
             'category_id'=>$this->category_id,
+            'five_star'=>$this->reviews()->where('rate',5)->count(),
+            'four_star'=>$this->reviews()->where('rate',4)->count(),
+            'three_star'=>$this->reviews()->where('rate',3)->count(),
+            'two_star'=>$this->reviews()->where('rate',2)->count(),
+            'one_star'=>$this->reviews()->where('rate',1)->count(),
             'reviews'=>ReviewResource::collection($this->reviews),
             'images'=>ImageResource::collection($this->images) ?? null,
 

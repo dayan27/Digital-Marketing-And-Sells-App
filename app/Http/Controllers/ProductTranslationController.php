@@ -54,9 +54,14 @@ class ProductTranslationController extends Controller
     public function show(Request $request,$product_id)
     {
         $product=Product::find($product_id);
-         $product->translate($request->language);
-       // return $productTrans;
-       return new ProductTranslationResource($product);
+        $product_trans=$product->translate($request->language);
+        if($product_trans) {
+            return new ProductTranslationResource( $product->translate($request->language));
+
+        }
+        
+       
+    
     }
 
     /**
