@@ -40,7 +40,7 @@ class ProductDistributionDataController extends Controller
          $shopProduct->product_id=$product['product_id'];
          $shopProduct->shop_id=$shop_id;
          $shopProduct->qty=$product['qty'];;
-         $shopProduct->provided_date=$product['provided_date'];
+         $shopProduct->provided_date='2014-10-10';
         //  $shopProduct->qty=$product->qty;
          $shopProduct->save();
          $productDistributionData['shope_id']=$shop_id;
