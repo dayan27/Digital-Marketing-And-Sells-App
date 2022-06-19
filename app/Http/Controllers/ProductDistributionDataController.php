@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductDistributionResource;
 use App\Models\ProductDistributionData;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 
 class ProductDistributionDataController extends Controller
@@ -14,7 +16,7 @@ class ProductDistributionDataController extends Controller
      */
     public function index()
     {
-        //
+        return ProductDistributionData::all();
     }
 
     /**
@@ -25,7 +27,27 @@ class ProductDistributionDataController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+       // return $request;
+       //return  ProductDistributionData::create($request->all());
+       $shop_id=$request->shop_id;
+       $products=$request->products;
+       $productDistributionData=[];
+       foreach($products as $product){
+         
+         $shopProduct= new ProductDistributionData();
+
+         $shopProduct->product_id=$product['product_id'];
+         $shopProduct->shop_id=$shop_id;
+         $shopProduct->qty=$product['qty'];;
+         $shopProduct->provided_date=$product['provided_date'];
+        //  $shopProduct->qty=$product->qty;
+         $shopProduct->save();
+         $productDistributionData['shope_id']=$shop_id;
+         $productDistributionData[]=$product;
+       }
+       return $productDistributionData;
+
     }
 
     /**
@@ -34,9 +56,19 @@ class ProductDistributionDataController extends Controller
      * @param  \App\Models\ProductDistributionData  $productDistributionData
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductDistributionData $productDistributionData)
+    public function show($shop_id)
     {
-        //
+        $datas= ProductDistributionData::where('shop_id',$shop_id)
+                                        ->where('status','pending')->get();
+         $productDistributionData=[];
+         return ProductDistributionResource::collection($datas);
+                            
+         foreach($datas as $data){
+            $productDistributionData[]= $data->product;
+         }    
+         
+         return $productDistributionData;
+                                                
     }
 
     /**
@@ -61,4 +93,6 @@ class ProductDistributionDataController extends Controller
     {
         //
     }
+
+  
 }

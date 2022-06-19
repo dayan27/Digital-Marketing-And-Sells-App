@@ -24,10 +24,8 @@ class FeaturedProductResource extends JsonResource
             'four_star'=>$this->reviews()->where('rate',4)->count(),
             'three_star'=>$this->reviews()->where('rate',3)->count(),
             'two_star'=>$this->reviews()->where('rate',2)->count(),
-            'one_star'=>$this->reviews()->where('rate',2)->count(),
+            'one_star'=>$this->reviews()->where('rate',1)->count(),
             'images'=> new ImageResource($this->images()->first()) ?? null
-
-
         ];
     }
 }
