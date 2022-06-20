@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integr('pin');
+            $table->integer('pin');
             $table->date('pickup_date');
             $table->decimal('total_price',2);
             $table->foreignId('order_status_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();

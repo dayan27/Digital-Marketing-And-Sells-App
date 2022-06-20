@@ -11,6 +11,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDistributionDataController;
 use App\Http\Controllers\ProductTranslationController;
@@ -70,4 +72,8 @@ Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
 
 Route::apiResource('/roles',RoleController::class);
 Route::apiResource('/permissions',PermissionController::class);
+
+
+Route::apiResource('/order_statuses',OrderStatusController::class);
+Route::apiResource('/orders',OrderController::class);
 

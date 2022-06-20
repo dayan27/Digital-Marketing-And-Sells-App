@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductDistributionResource;
+use App\Http\Resources\ProductDistributionShowResource;
 use App\Models\ProductDistributionData;
 use App\Models\Shop;
 use Illuminate\Http\Request;
@@ -43,10 +44,11 @@ class ProductDistributionDataController extends Controller
          $shopProduct->provided_date='2014-10-10';
         //  $shopProduct->qty=$product->qty;
          $shopProduct->save();
-         $productDistributionData['shope_id']=$shop_id;
-         $productDistributionData[]=$product;
+        // return $shopProduct;
+         //$productDistributionData['shope_id']=$shop_id;
+         $productDistributionData[]=$shopProduct;
        }
-       return $productDistributionData;
+       return ProductDistributionResource::Collection( $productDistributionData);
 
     }
 
@@ -60,14 +62,13 @@ class ProductDistributionDataController extends Controller
     {
         $datas= ProductDistributionData::where('shop_id',$shop_id)
                                         ->where('status','pending')->get();
-         $productDistributionData=[];
-         return ProductDistributionResource::collection($datas);
+         return ProductDistributionShowResource::collection($datas);
                             
-         foreach($datas as $data){
-            $productDistributionData[]= $data->product;
-         }    
+        //  foreach($datas as $data){
+        //     $productDistributionData[]= $data->product;
+        //  }    
          
-         return $productDistributionData;
+        //  return $productDistributionData;
                                                 
     }
 
