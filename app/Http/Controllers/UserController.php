@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -26,8 +27,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $data=$request->all();
-        // $data['password']
+        $data=$request->all();
+        $data['verification_code']=rand(1000,9999);
+        $data['password']=Hash::make($request->password);
+        
+       return User::create($data);
     }
 
     /**
@@ -38,7 +42,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return User::find($id);
     }
 
     /**
@@ -50,7 +54,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return user::find($id)->update($request->all());
     }
 
     /**
@@ -61,6 +65,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user=User::find($id)->has('orders')->get();
+        return $user;
+        
     }
 }

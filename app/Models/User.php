@@ -18,9 +18,20 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'phone_number',
+        'join_date',
+        'zone',
         'email',
         'password',
+        'user_region',
+        'user_zone',
+        'user_woreda',
+        'verification_code',
+        'created_at',
+        'updated_at',
+
     ];
 
     /**
@@ -45,5 +56,9 @@ class User extends Authenticatable
     public function reviews()
     {
         return $this->belongsTo(Review::class);
+    }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }
