@@ -17,10 +17,12 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->integer('pin');
             $table->date('pickup_date');
-            $table->decimal('total_price',2);
+            $table->decimal('total_price',10,2);
             $table->foreignId('order_status_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('payment_type_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('shop_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+
 
             $table->timestamps();
         });

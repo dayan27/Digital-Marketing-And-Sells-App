@@ -18,6 +18,7 @@ use App\Http\Controllers\ProductDistributionDataController;
 use App\Http\Controllers\ProductTranslationController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShopTranslationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,7 @@ Route::apiResource('/images',ImageController::class);
 Route::apiResource('/managers',ManagerController::class);
 Route::apiResource('/languages',LanguageController::class);
 
+//product related
 Route::apiResource('/products',ProductController::class);
 Route::apiResource('/product_histories',ProductHistoryController::class);
 Route::apiResource('/product_distribution_data',ProductDistributionDataController::class);
@@ -57,7 +59,7 @@ Route::post('/add_featured_products/{id}',[ProductController::class,'addFeatured
 Route::get('/get_featured_product_detail/{id}',[ProductController::class,'getFeaturedProductDetail']);
 
 
-
+//shop related
 Route::get('/shop_products/{id}',[ShopController::class,'getShopProducts']);
 Route::apiResource('/shops',ShopController::class);
 Route::get('/search',[ProductController::class,'search']);
@@ -69,11 +71,14 @@ Route::post('/login',[LoginController ::class,'login']);
 Route::post('/forgot',[ForgotPasswordController::class,'forgot']);
 Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
 
-
+//role and permission
 Route::apiResource('/roles',RoleController::class);
 Route::apiResource('/permissions',PermissionController::class);
 
-
+//order related
 Route::apiResource('/order_statuses',OrderStatusController::class);
 Route::apiResource('/orders',OrderController::class);
+
+Route::apiResource('/users',UserController::class);
+
 

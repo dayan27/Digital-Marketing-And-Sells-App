@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
@@ -17,7 +18,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+       return OrderResource::collection(Order::all());
     }
 
     /**
@@ -42,6 +43,8 @@ class OrderController extends Controller
        $order->user_id=$request->user_id;
        $order->order_status_id=OrderStatus::where('status_name','pending')->first()->id;
        $order->payment_type_id=$request->payment_type_id;
+       $order->shop_id=$request->shop_id;
+
        
        $orderItems=$request->items;
        $totalPrice=0;
