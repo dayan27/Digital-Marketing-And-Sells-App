@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderDetailResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -38,13 +39,13 @@ class OrderController extends Controller
     //     DB::rollBack();
     //    }
        $order=new Order();
-       $order->pin=rand(100,1000);
+       $order->pin=rand(1000,9999);
        $order->pickup_date=date('Y-m-d',strtotime($request->pickup_date));
        $order->user_id=$request->user_id;
        $order->order_status_id=OrderStatus::where('status_name','pending')->first()->id;
        $order->payment_type_id=$request->payment_type_id;
        $order->shop_id=$request->shop_id;
-
+    //   ret Str::random(10)
        
        $orderItems=$request->items;
        $totalPrice=0;
@@ -107,5 +108,16 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+    /**
+     * return detail about order
+     */
+    public function orderDetail($id){
+       $order=Order::find($id);
+      return new OrderDetailResource($order);
+    //    $order_items=OrderItem::where()
+    //    foreach()
+
+
     }
 }

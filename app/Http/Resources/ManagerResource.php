@@ -29,10 +29,7 @@ class ManagerResource extends JsonResource
           // 'phone_numbers'=>PhoneNumberResource::collection($this->phone_numbers)
             'phone_numbers'=>PhoneNumberResource::collection($this->phone_numbers),
 
-           // 'products'=> ProductForShopResource::collection($this->products),
-
-
-            
+           // 'products'=> ProductForShopResource::collection($this->products)    
 
         ];
     }

@@ -65,8 +65,16 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user=User::find($id)->has('orders')->get();
-        return $user;
-        
+        $user=User::find($id);
+       $orders= $user->orders;
+       if($orders->isEmpty()){
+        $user->delete();
+        return response()->json('successfully delete',200);
+       }
+       else{
+        return response()->json('fail to delete',400);
+
+       }
+           
     }
 }
