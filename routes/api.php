@@ -79,6 +79,10 @@ Route::apiResource('/permissions',PermissionController::class);
 Route::apiResource('/order_statuses',OrderStatusController::class);
 Route::apiResource('/orders',OrderController::class);
 Route::get('/order_detail/{id}',[OrderController::class,'orderDetail']);
+Route::post('/assign_permission/{id}',[RoleController::class,'assignPermissions']);
+Route::post('/assign_roles/{id}',[ManagerController::class,'assignRoleToEmployee']);
+
+
 
 
 

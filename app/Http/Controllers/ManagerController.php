@@ -115,4 +115,15 @@ class ManagerController extends Controller
         $manager->delete();
         return response()->json('sucessfully deleted',200);     
     }
+
+/**
+ * assign role to a certain employee
+ */
+
+
+     public function assignRoleToEmployee(Request $request,$id){
+        $user=Manager::find($id);
+        return  $user->assignRole($request->role_id);
+
+    }
 }

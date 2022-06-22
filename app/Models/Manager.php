@@ -15,7 +15,8 @@ class Manager extends Model
 {
     use HasFactory,HasApiTokens,Notifiable;
     use HasRoles;
-
+    protected $guard_name = 'web';
+    
     public $fillable=[
         'first_name',
         'last_name',
@@ -27,8 +28,6 @@ class Manager extends Model
         'manager_city',
         'manager_kebele',
         'house_no',
-
-
     ];
 
     public function phone_numbers()
