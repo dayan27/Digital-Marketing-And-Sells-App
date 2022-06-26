@@ -42,12 +42,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/shop_products',ShopeProductController::class);
   //  Route::get('/shop_product/{id}',[ShopController::class,'getShopProducts']);
 
-//     32|JZLfl0TyKT73iSmbEdd6REnZ7TQFl09PU2TKxji6
 });
 
 Route::apiResource('/categories',CategoryController::class);
 Route::get('/get_featured_products',[ProductController::class,'getFeaturedProducts']);
 Route::get('/get_products/{id}',[ProductController::class,'getProducts']);
+Route::post('/set_featured_products/{id}',[ProductController::class,'setFeaturedProduct']);
+Route::post('/set_product_active/{id}',[ProductController::class,'setActive']);
+Route::post('/set_order_status/{id}',[OrderController::class,'setOrderStatus']);
+Route::get('/product_filter',[ProductController::class,'productFilter']);
+
+
 
 Route::apiResource('/images',ImageController::class);
 Route::apiResource('/managers',ManagerController::class);

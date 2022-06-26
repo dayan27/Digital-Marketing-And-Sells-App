@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductTranslation;
 use App\ReusedModule\ImageUpload;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class ProductController extends Controller
     {
         $query= Product::query();
       
-          $query ->when(request('filter'),function($query){
+          $query->when(request('filter'),function($query){
 
             if (request('filter') == 'outstock') {
                $query= $query->where('qty', '=', 0);
@@ -47,7 +48,7 @@ class ProductController extends Controller
                 $query= Product::query();
             }
             elseif(request('filter') == 'category'){
-                $query = $query->whereHas('category', function (Builder $query) {
+                $query = $query->whereHas('category', function (EloquentBuilder $query) {
                     $query->where('categories.id', '=', request('filter'));
                 });
             
@@ -56,7 +57,7 @@ class ProductController extends Controller
                
           
          });
-        return   ProductListResource::collection($query->paginate());
+        return   ProductListResource::collection($query->get());
       
     }
 
@@ -181,6 +182,73 @@ class ProductController extends Controller
          $product= Product::where('category_id',$category_id)->with('reviews')->get();
          return AllProductResource::collection($product);
        }
+       /**
+        * to  make a product featured or remove 
+        */
+
+       public function setFeaturedProduct($product_id){
+       $product= Product::find($product_id);
+       $product->is_featured=request()->is_featured;
+       $product->save();
+       return $product->is_featured;
+       }
+
+       /**
+        * make a product active or inactive(when a production is stopped or selling)
+        */
+
+        public function setActive($product_id){
+            $product= Product::find($product_id);
+            $product->is_active=request()->is_active;
+            $product->save();
+            return $product->is_active;
+
+        }
+
+    //     public function productFilter(){
+            
+    //     // $shop=request()->user()->shop;
+    //     // // return $shop->products;
+    //       $query= Product::all();
+        
+    //       $query ->when(request('filter'),function($query){
+  
+    //         if (request('filter') == 'outstock') {
+    //            $query= $query->where('qty', '=', 0);
+  
+    //         }elseif (request('filter') == 'instock') {
+    //             $query= $query->where('qty', '!=', 0);
+    //         }
+    //         elseif (request('filter') == 'active') {
+    //             $query= $query->where('is_active', '=', 1);
+    //         }
+    //         elseif (request('filter') == 'inactive') {
+    //             $query= $query->where('is_active', '=', 0);
+    //         }
+    //         // elseif (request('filter') == 'pending') {
+    //         //     $query= $query->where('is_active', '=', 0);
+    //         // }
+            
+    //         elseif(request('filter') == 'all'){
+    //             $query= $query;
+    //         }
+    //         elseif(request('filter') == 'category'){
+    //             $query = $query->whereHas('category', function (Builder $query) {
+    //                 $query->where('categories.id', '=', request('filter'));
+    //             });
+            
+  
+    //         }
+               
+          
+    //      });
+    //      return $query;
+
+    //   //  return   ProductListResource::collection($query->paginate());
+
+    //     }
+
+       
 
     }
 

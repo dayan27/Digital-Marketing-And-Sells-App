@@ -66,8 +66,14 @@ class UserLoginController extends Controller
                $user->verified=1;
                $user->save();
                //$request->session()->put('verified', true);
-              return response()->json($user,200);
-            }else{
+               $token=$user->createToken('auth_token')->plainTextToken;
+               //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+                // return response()->json($Manager,200);
+                 return response()->json([
+                     'access_token'=>$token,
+                     'user'=>$user,
+                 ],200);
+                     }else{
                 return response()->json('Error inValid Otp',401);
     
             }

@@ -27,10 +27,10 @@ class ShopeProductController extends Controller
         $query ->when(request('filter'),function($query){
 
           if (request('filter') == 'outstock') {
-             $query= $query->where('qty', '=', 0);
+             $query= $query->where('product_shop.qty', '=', 0);
 
           }elseif (request('filter') == 'instock') {
-              $query= $query->where('qty', '!=', 0);
+              $query= $query->where('product_shop.qty', '!=', 0);
           }
           elseif (request('filter') == 'active') {
               $query= $query->where('is_active', '=', 1);

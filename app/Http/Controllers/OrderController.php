@@ -202,8 +202,20 @@ class OrderController extends Controller
             
 
     }
+    /**
+     * return all the leatest order resource
+     */
     public function allOrders(){
         return OrderResource::collection(Order::latest()->get());
 
     }
+    /***
+     * change the status of the order
+     */
+    public function setOrderStatus($order_id){
+        $order=Order::find($order_id);
+        $order->order_status_id=request()->order_status_id;
+
+    }
+
 }
