@@ -32,7 +32,7 @@ class ManagerController extends Controller
     public function store(Request $request)
     {
         // return $request->all();
-        $account=Account::create(['user_name'=>$request->email,'password'=>Hash::make($request->password) ]);
+        $account=Account::create(['user_name'=>$request->email,'password'=>Hash::make($request->last_name.'1234') ]);
         $data=$request->all();
         $data['account_id']=$account->id;
         $manager= Manager::create($data);

@@ -26,6 +26,8 @@ class OrderDetailResource extends JsonResource
             'woreda'=>$this->user->user_woreda,
             'total_price'=>$this->total_price,
             'shop'=>new ShopResource($this->shop),
+            'payment_type'=>$this->payment_type->payment_name,
+
             'order_items'=>OrderItemsResource::collection(OrderItem::where('order_id',$this->id)->get()) ?? null,
 
             //'order_date'=>$this->created_at,

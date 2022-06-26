@@ -17,7 +17,7 @@ class ProductDistributionDataController extends Controller
      */
     public function index()
     {
-        return ProductDistributionData::all();
+        return ProductDistributionData::where('status','!=','pending')->get();
     }
 
     /**

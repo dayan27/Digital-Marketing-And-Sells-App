@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ShopProductResource;
+use App\Models\Account;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
 use App\Models\shop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ShopController extends Controller
 {
@@ -17,7 +19,7 @@ class ShopController extends Controller
      */
     public function index()
     {
-        return shop::all()->load('manager');
+        return Shop::all()->load('manager');
     }
 
     /**
@@ -29,7 +31,10 @@ class ShopController extends Controller
      */
     public function store(Request $request)
     {
-        $manager= Manager::create($request->all());
+        $account=Account::create(['user_name'=>$request->email,'password'=>Hash::make($request->last_name.'1234') ]);
+        $data=$request->all();
+        $data['account_id']=$account->id;
+        $manager= Manager::create($data);
         if($manager){
          $phone_numbers=[];
          $phoneNumbers=$request->phone_numbers;
@@ -87,7 +92,16 @@ class ShopController extends Controller
      */
     public function destroy(shop $shop)
     {
-        $shop->delete();
+        $products=$shop->products;
+        if($products->isEmpty()){
+            $shop->manager->delete();
+            $shop->delete();
+            
+        }
+        else{
+            return response()->json('you can not delet a shop with histroy',400); 
+
+        }
         return response()->json('sucessfully deleted',200); 
 
     }
@@ -115,10 +129,10 @@ class ShopController extends Controller
      * 
      */
 
-    public function getShopProducts($shop_id){
-       $shop=Shop::find($shop_id); 
-    //    return $shop->load('products','manager');
-      return new ShopProductResource( $shop->load('products','manager'));
+    // public function getShopProducts($shop_id){
+    //     $shop=Shop::find($shop_id); 
+    // //    return $shop->load('products','manager');
+    // return new ShopProductResource( $shop->load('products','manager'));
 
-    }
+    // }
 }

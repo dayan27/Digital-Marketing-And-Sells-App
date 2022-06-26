@@ -29,7 +29,8 @@ class ProductListResource extends JsonResource
            // 'maxiumum_supply_voltage'=>$this->maxiumum_supply_voltage,
             //'maxiumum_current_power'=>$this->maxiumum_current_power,
             'price'=>$this->price,
-            'qty'=>$this->qty,
+             'qty'=>$this->qty,
+            
             'weight'=>$this->weight,
             //'description'=>$this->description,
             'images'=> new ImageListResource($this->images()->inRandomOrder()->first()) ?? null,

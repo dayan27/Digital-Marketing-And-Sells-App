@@ -21,14 +21,16 @@ class LoginController extends Controller
 
         ]);
 
-        $user=Account::where('user_name',$request->email)->first();
+        $user_acc=Account::where('user_name',$request->email)->first();
+        $user=Manager::where('email',$request->email)->first();
         if (! $user ) {
             return response()->json([
                 'message'=>' incorrect email and password',
                 ]
                ,404 );
         }
-        $check=Hash::check($request->password, $user->password);
+
+        $check=Hash::check($request->password, $user_acc->password);
         if (! $check ) {
             return response()->json([
                 'message'=>' incorrect  and password',
@@ -37,11 +39,12 @@ class LoginController extends Controller
         }
 
         $token=$user->createToken('auth_token')->plainTextToken;
-        $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+      //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
        // return response()->json($Manager,200);
         return response()->json([
             'access_token'=>$token,
             'user'=>$user,
+            'shop_id'=>$user->shop->id?? null,
         ],200);
 
      }

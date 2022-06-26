@@ -18,7 +18,7 @@ class OrderItemsResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->product->name,
             'model'=>$this->product->model,
-            'qty'=>$this->product->qty,
+            'qty'=>$this->quantity,
             'unit_price'=>$this->unit_price,    
             'image'=>new ImageResource($this->product->images->first()) ?? null,  
 

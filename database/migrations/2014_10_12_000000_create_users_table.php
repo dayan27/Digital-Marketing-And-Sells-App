@@ -20,14 +20,13 @@ class CreateUsersTable extends Migration
             $table->string('phone_number');
             $table->boolean('active')->default(1);
             $table->boolean('verified')->default(0);
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string("user_region")->nullable();
             $table->string("user_zone")->nullable();
             $table->string("user_woreda")->nullable();
-            $table->string('verification_code');
-
+            $table->string('verification_code')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

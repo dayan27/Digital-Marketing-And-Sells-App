@@ -41,6 +41,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
+        'verification_code',
         'remember_token',
     ];
 
@@ -60,5 +61,10 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
     }
 }

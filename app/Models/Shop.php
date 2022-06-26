@@ -38,7 +38,7 @@ class Shop extends Model implements TranslatableContract
 
     public function products()
     {
-        return $this->belongsToMany(Product::class)->withPivot('qty');
+        return $this->belongsToMany(Product::class,'product_shop')->withPivot('qty');
     }
     public function orders()
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentType;
 use Illuminate\Http\Request;
 
 class PaymentTypeController extends Controller
@@ -13,7 +14,7 @@ class PaymentTypeController extends Controller
      */
     public function index()
     {
-        //
+        return PaymentType::all();
     }
 
     /**

@@ -19,6 +19,7 @@ class CreateProductDistributionDatasTable extends Migration
             $table->integer('qty');
           //confirm the products are well and safe
             $table->string('status')->default('pending') ;   
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('shop_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });

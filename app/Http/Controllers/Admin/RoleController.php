@@ -76,7 +76,7 @@ class RoleController extends Controller
 
     public function assignPermissions(Request $request,$role_id){
         $role=Role::find($role_id);
-        $role->syncPermissions($request->permissions);
+       return $role->syncPermissions($request->permissions);
 
 
     }

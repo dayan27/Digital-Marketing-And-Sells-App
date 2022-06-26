@@ -80,7 +80,8 @@ class ProductController extends Controller
     {
        // return Product::all();
         $data=$request->all();
-        $data['date_of_production']=date('Y-m-d',strtotime($request->date_of_production));
+        $data['weight']=(double)$request->weight;
+       // $data['date_of_production']=date('M-m-d',strtotime($request->date_of_production));
         $product= Product::create($data);
 
          //saving blog images
@@ -131,6 +132,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $images=$product->images;
+        foreach($images as $image){
+            $image->delete();
+        }
         $product->delete();
         return response()->json('sucessfully deleted',200); 
 
