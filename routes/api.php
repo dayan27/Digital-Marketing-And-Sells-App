@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\Auth\UserForgotPasswordController;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
@@ -81,10 +82,15 @@ Route::apiResource('/shop_translations',ShopTranslationController::class);
 
 
 Route::post('/login',[LoginController ::class,'login']);
-Route::post('/user_login',[UserLoginController ::class,'login']);
 //->middleware('verified');
 Route::post('/forgot',[ForgotPasswordController::class,'forgot']);
 Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
+//user
+Route::post('/user_login',[UserLoginController ::class,'login']);
+//->middleware('phone_verified');
+Route::post('/user_forgot',[UserForgotPasswordController::class,'forgot']);
+Route::post('/user_reset/{token}',[UserForgotPasswordController::class,'resetPassword']);
+
 
 //role and permission
 Route::apiResource('/roles',RoleController::class);
@@ -117,4 +123,3 @@ Route::post('/accept_product_request',[ShopeProductController::class,'acceptProd
  Route::get('/all_orders',[OrderController::class,'allOrders']);
 
 
- 

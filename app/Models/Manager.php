@@ -11,12 +11,12 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class Manager extends Model 
+class Manager extends Model implements MustVerifyEmail
 {
     use HasFactory,HasApiTokens,Notifiable;
     use HasRoles;
     protected $guard_name = 'web';
-    
+
     public $fillable=[
         'first_name',
         'last_name',
@@ -35,7 +35,7 @@ class Manager extends Model
         return $this->hasMany(PhoneNumber::class);
     }
 
-    
+
     public function shop()
     {
         return $this->hasOne(Shop::class);
