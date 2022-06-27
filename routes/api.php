@@ -39,11 +39,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout',[LoginController::class,'logout']);
-    Route::apiResource('/orders',OrderController::class);
     Route::apiResource('/shop_products',ShopeProductController::class);
   //  Route::get('/shop_product/{id}',[ShopController::class,'getShopProducts']);
 
 });
+
+Route::apiResource('/orders',OrderController::class);
+
 
 Route::apiResource('/categories',CategoryController::class);
 Route::get('/get_featured_products',[ProductController::class,'getFeaturedProducts']);

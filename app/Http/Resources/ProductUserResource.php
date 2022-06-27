@@ -36,7 +36,7 @@ class ProductUserResource extends JsonResource
                                                                             ->where('id','!=',$this->id)->paginate(5)),
                                                                            // ->where('id',!$this->id)->paginate(5)),
             'product_you_may_like'=>RecommendedProductResource::collection(Product::latest()->take(5)->get()),
-        
+            'reviews'=>$this->reviews,
 
         ];
     }

@@ -6,6 +6,7 @@ use App\Http\Resources\AllProductResource;
 use App\Http\Resources\DetailProductResource;
 use App\Http\Resources\FeaturedProductResource;
 use App\Http\Resources\ProductListResource;
+use App\Http\Resources\ProductListSearchResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Product;
@@ -69,7 +70,7 @@ class ProductController extends Controller
             $query->where('name','LIKE','%'.request('search').'%');
                 //  ->orWhere('products.model','LIKE','%'.request('search').'%');
             });
-            return   ProductListResource::collection($query->paginate());
+            return   ProductListSearchResource::collection($query->paginate());
     }
 
     /**

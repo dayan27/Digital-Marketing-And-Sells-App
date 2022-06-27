@@ -23,8 +23,37 @@ class OrderController extends Controller
      */
     public function index()
     {
-       return OrderResource::collection(Order::where('shop_id',request()->user()->shop->id)->get());
-    }
+        $per_page=request()->per_page;
+        $query= Order::query();
+      
+          $query->when(request('filter'),function($query){
+
+            if (request('filter') == 'pending') {
+               $query= $query->wherehas('order_status', function(  $query ){
+                $query->where('order_statuses.status_name','=',request('filter'));
+               
+            });
+ 
+            }elseif (request('filter') == 'cancel') {
+                $query= $query->wherehas('order_status', function(  $query ){
+                    $query->where('order_statuses.status_name','=',request('filter'));
+            });
+        }
+        elseif (request('filter') == 'finshed') {
+            $query= $query->wherehas('order_status', function(  $query ){
+                $query->where('order_statuses.status_name','=',request('filter'));
+        });
+    }         
+            elseif(request('filter') == 'all'){
+                $query= Order::query();
+            }  
+      //  return   ProductListResource::collection($query->paginate($per_page));
+      // return OrderResource::collection(Order::where('shop_id',request()->user()->shop->id)->get());
+    });
+ return OrderResource::collection($query->paginate($per_page));
+
+
+}
     /**
      * search order by buyer name and order reference no(pin)
      */
