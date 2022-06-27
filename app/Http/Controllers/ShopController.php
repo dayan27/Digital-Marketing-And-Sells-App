@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ShopPaginatedResource;
 use App\Http\Resources\ShopProductResource;
 use App\Models\Account;
 use App\Models\Manager;
@@ -19,7 +20,23 @@ class ShopController extends Controller
      */
     public function index()
     {
-        return Shop::all()->load('manager');
+        //return Shop::all()->load('manager');
+        $per_page=request()->per_page;
+        $query= Shop::query();
+      
+          $query->when(request('filter'),function($query){
+
+            if (request('filter') == 'active') {
+               $query= $query->where('is_active', '=', 1);
+ 
+            }elseif (request('filter') == 'inactive') {
+                $query= $query->where('is_active', '=', 0);
+            }  
+            elseif(request('filter') == 'all'){
+                $query= Shop::query();
+            }   
+         });
+        return  ShopPaginatedResource::collection($query->paginate($per_page));
     }
 
     /**

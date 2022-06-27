@@ -17,15 +17,17 @@ use Illuminate\Support\Facades\Hash;
 class OrderController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * filter and display an order from a certian shop
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+
         $per_page=request()->per_page;
-        $query= Order::query();
-      
+        $query= Order::query()->where('shop_id',request()->user()->shop->id);
+        // Order::where('shop_id',request()->user()->shop->id)->get();
+
           $query->when(request('filter'),function($query){
 
             if (request('filter') == 'pending') {
@@ -34,12 +36,12 @@ class OrderController extends Controller
                
             });
  
-            }elseif (request('filter') == 'cancel') {
+            }elseif (request('filter') == 'canceled') {
                 $query= $query->wherehas('order_status', function(  $query ){
                     $query->where('order_statuses.status_name','=',request('filter'));
             });
         }
-        elseif (request('filter') == 'finshed') {
+        elseif (request('filter') == 'completed') {
             $query= $query->wherehas('order_status', function(  $query ){
                 $query->where('order_statuses.status_name','=',request('filter'));
         });
@@ -48,7 +50,6 @@ class OrderController extends Controller
                 $query= Order::query();
             }  
       //  return   ProductListResource::collection($query->paginate($per_page));
-      // return OrderResource::collection(Order::where('shop_id',request()->user()->shop->id)->get());
     });
  return OrderResource::collection($query->paginate($per_page));
 
@@ -235,15 +236,52 @@ class OrderController extends Controller
      * return all the leatest order resource
      */
     public function allOrders(){
-        return OrderResource::collection(Order::latest()->get());
+        
+        $per_page=request()->per_page;
+        $query= Order::query();
+      
+          $query->when(request('filter'),function($query){
 
+            if (request('filter') == 'pending') {
+               $query= $query->wherehas('order_status', function(  $query ){
+                $query->where('order_statuses.status_name','=',request('filter'));
+               
+            });
+ 
+            }elseif (request('filter') == 'canceled') {
+                $query= $query->wherehas('order_status', function(  $query ){
+                    $query->where('order_statuses.status_name','=',request('filter'));
+            });
+        }
+        elseif (request('filter') == 'completed') {
+            $query= $query->wherehas('order_status', function(  $query ){
+                $query->where('order_statuses.status_name','=',request('filter'));
+        });
+      }         
+            elseif(request('filter') == 'all'){
+                $query= Order::query();
+            }  
+      //  return   ProductListResource::collection($query->paginate($per_page));
+      // return OrderResource::collection(Order::where('shop_id',request()->user()->shop->id)->get());
+       });
+     return OrderResource::collection($query->paginate($per_page));
     }
     /***
      * change the status of the order
      */
-    public function setOrderStatus($order_id){
+    // public function setOrderStatus($order_id){
+    //     $order=Order::find($order_id);
+    //     $order->order_status_id=request()->order_status_id;
+
+    // }
+
+
+    public function changeOrderStatus($order_id){
         $order=Order::find($order_id);
-        $order->order_status_id=request()->order_status_id;
+       $status_id= OrderStatus::where('status_name',request()->status)->first()->id;
+         $order->order_status_id=$status_id;
+         $order->save();
+        
 
     }
 

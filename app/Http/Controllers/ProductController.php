@@ -53,8 +53,6 @@ class ProductController extends Controller
                 $query = $query->whereHas('category', function (EloquentBuilder $query) {
                     $query->where('categories.id', '=', request('filter'));
                 });
-            
-
             }
                
           

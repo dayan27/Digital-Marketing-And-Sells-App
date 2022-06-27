@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Notifications\NewPasswordNotification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
@@ -11,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class Manager extends Model implements MustVerifyEmail
+class Manager extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory,HasApiTokens,Notifiable;
     use HasRoles;

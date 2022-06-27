@@ -19,7 +19,23 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::all());
+        $per_page=request()->per_page;
+        $query= User::query();
+      
+          $query->when(request('filter'),function($query){
+
+            if (request('filter') == 'active') {
+               $query= $query->where('active', '=', 1);
+ 
+            }elseif (request('filter') == 'inactive') {
+                $query= $query->where('active', '=', 0);
+            }
+            elseif (request('filter') == 'blocked') {
+                $query= $query->where('is_blocked', '=', 1);
+            }
+         });
+        
+        return UserResource::collection($query->paginate($per_page));
     }
 
     /**
