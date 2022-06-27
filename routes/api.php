@@ -21,6 +21,7 @@ use App\Http\Controllers\ProductTranslationController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ShopeProductController;
 use App\Http\Controllers\ShopTranslationController;
+use App\Http\Controllers\User\ProductController as UserProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -62,6 +63,8 @@ Route::apiResource('/languages',LanguageController::class);
 Route::apiResource('/products',ProductController::class);
 Route::apiResource('/product_histories',ProductHistoryController::class);
 Route::apiResource('/product_distribution_data',ProductDistributionDataController::class);
+Route::apiResource('/user_products',UserProductController::class);
+
 
 Route::apiResource('/product_translations',ProductTranslationController::class);
 Route::post('/add_products/{id}',[ShopController::class,'addProducts']);
