@@ -52,8 +52,11 @@ class ManagerController extends Controller
 
         }
        $manager['phone_numbers']=$phone_numbers;
-       
+
        }
+
+       $manager->sendEmailVerificationNotification();
+
        return $manager;
     }
 
@@ -94,7 +97,7 @@ class ManagerController extends Controller
         }
 
          $manager['phone_numbers']=$phone_numbers;
-       
+
       }
          //return $manager;
          return new ManagerResource($manager->load('phone_numbers'));
@@ -113,7 +116,7 @@ class ManagerController extends Controller
     //    foreach(){
         $manager->phone_numbers()->delete();
         $manager->delete();
-        return response()->json('sucessfully deleted',200);     
+        return response()->json('sucessfully deleted',200);
     }
 
 /**
