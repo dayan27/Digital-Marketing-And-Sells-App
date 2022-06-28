@@ -32,7 +32,7 @@ class ResetPasswordController extends Controller
             $tokenData = DB::table('password_resets')->where('token', $token)->first();
         // Redirect the user back to the password reset request form if the token is invalid
             if (!$tokenData)
-            return view('auth.passwords.email');
+            return response()->json('not valid token',401);
 
             $user = Account::where('user_name', $tokenData->email)->first();
         // Redirect the user back if the email is invalid

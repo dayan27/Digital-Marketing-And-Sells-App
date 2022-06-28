@@ -75,9 +75,9 @@ class UserLoginController extends Controller
                  ],200);
                      }else{
                 return response()->json('Error inValid Otp',401);
-    
+
             }
-    
+
         }
 
         public function changePassword(Request $request){
@@ -111,5 +111,10 @@ class UserLoginController extends Controller
                 'message'=>'Successfully  Reset',
                 ]
                ,200 );
+        }
+
+
+        public function forgotPassword(){
+            
         }
   }
