@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ProductUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -29,8 +30,13 @@ class ProductResource extends JsonResource
             'is_active'=>$this->is_active,
             'is_featured'=>$this->is_featured,
             'category_id'=>$this->category_id,
-            'images'=>ImageResource::collection($this->images) ?? null
-
+            'images'=>ImageResource::collection($this->images) ?? null,
+            'related_products'=>RelatedProductResource::collection(Product::where('brand',$this->brand)
+                                                                            ->where('category_id',$this->category_id)
+                                                                            ->where('id','!=',$this->id)->paginate(5)),
+                                                                           // ->where('id',!$this->id)->paginate(5)),
+            'product_you_may_like'=>RecommendedProductResource::collection(Product::latest()->take(5)->get()),
+        
 
         ];
     }

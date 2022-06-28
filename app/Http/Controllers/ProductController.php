@@ -24,6 +24,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $per_page=request()->per_page;
         $query= Product::query();
       
           $query->when(request('filter'),function($query){
@@ -57,7 +58,7 @@ class ProductController extends Controller
                
           
          });
-        return   ProductListResource::collection($query->get());
+        return   ProductListResource::collection($query->paginate($per_page));
       
     }
 
