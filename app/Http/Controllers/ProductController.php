@@ -62,13 +62,15 @@ class ProductController extends Controller
     }
 
     public function search(){
+        $per_page=request()->per_page;
+
         $query=ProductTranslation::query();
         $query=$query->when(request('search'),function($query){
 
             $query->where('name','LIKE','%'.request('search').'%');
                 //  ->orWhere('products.model','LIKE','%'.request('search').'%');
             });
-            return   ProductListSearchResource::collection($query->paginate());
+            return   ProductListSearchResource::collection($query->paginate($per_page));
     }
 
     /**

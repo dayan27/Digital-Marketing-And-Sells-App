@@ -59,14 +59,14 @@ class OrderController extends Controller
      * search order by buyer name and order reference no(pin)
      */
     public function search(){
-        $order=Order::query();
-        $order->where('pin',request('search'))
+           $query=Order::query();
+        $query->where('pin',request('search'))
                 ->orwhere(function($query){
                     $query = $query->whereHas('user', function (Builder $query) {
-                      return  $query = $query->where('user.name', '=', request('search'));
+                        $query = $query->where('users.first_name', '=', request('search'));
                     });
                 });
-           // return   $query->paginate();
+           return  orderResource::collection($query->get());
     }
 
     /**

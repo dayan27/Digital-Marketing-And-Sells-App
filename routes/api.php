@@ -69,6 +69,7 @@ Route::apiResource('/products',ProductController::class);
 Route::apiResource('/product_histories',ProductHistoryController::class);
 Route::apiResource('/product_distribution_data',ProductDistributionDataController::class);
 Route::apiResource('/user_products',UserProductController::class);
+Route::post('/change_user_status/{id}',[UserController ::class,'changeUserStatus']);
 
 
 Route::apiResource('/product_translations',ProductTranslationController::class);
@@ -104,6 +105,8 @@ Route::get('/order_detail/{id}',[OrderController::class,'orderDetail']);
 Route::post('/assign_permission/{id}',[RoleController::class,'assignPermissions']);
 Route::post('/assign_roles/{id}',[ManagerController::class,'assignRoleToEmployee']);
 Route::post('/search_order',[OrderController::class,'search']);
+Route::post('/search_shops',[ShopController::class,'search']);
+
 
 
 Route::apiResource('/payment_types',PaymentTypeController::class);

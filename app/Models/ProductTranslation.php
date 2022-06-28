@@ -11,5 +11,10 @@ class ProductTranslation extends Model
     protected $fillable = ['name','warranty','detail','description'];
     public $timestamps = false;
 
+    
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
    
 }

@@ -10,4 +10,10 @@ class ShopTranslation extends Model
     use HasFactory;
     protected $fillable = ['shop_name','region','zone','woreda','city'];
     public $timestamps = false;
+
+       
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
 }

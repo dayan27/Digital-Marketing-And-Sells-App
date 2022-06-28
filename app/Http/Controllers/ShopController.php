@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ShopPaginatedResource;
 use App\Http\Resources\ShopProductResource;
+use App\Http\Resources\ShopSearchResource;
 use App\Models\Account;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
 use App\Models\shop;
+use App\Models\ShopTranslation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,9 +37,22 @@ class ShopController extends Controller
             elseif(request('filter') == 'all'){
                 $query= Shop::query();
             }   
+
          });
         return  ShopPaginatedResource::collection($query->paginate($per_page));
     }
+
+    public function search(){
+       // $per_page=request()->per_page;
+        $query=ShopTranslation::query();
+        $query=$query->when(request('search'),function($query){
+            $query->where('shop_name','LIKE','%'.request('search').'%')
+                  ->orWhere('city','LIKE','%'.request('search').'%');
+            });
+            //return $query->get();
+            return   ShopSearchResource::collection($query->get());
+    }
+
 
     /**
      *store all together the manager,phone number
@@ -141,6 +156,8 @@ class ShopController extends Controller
         return $products;
 
     }
+   
+
     /**
      * get all product of a specific shop
      * 

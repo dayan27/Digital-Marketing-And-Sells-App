@@ -22,19 +22,15 @@ class UserController extends Controller
         $per_page=request()->per_page;
         $query= User::query();
       
-          $query->when(request('filter'),function($query){
+        $query=$query->when(request('search'),function($query){
 
-            if (request('filter') == 'active') {
-               $query= $query->where('active', '=', 1);
- 
-            }elseif (request('filter') == 'inactive') {
-                $query= $query->where('active', '=', 0);
-            }
-            elseif (request('filter') == 'blocked') {
-                $query= $query->where('is_blocked', '=', 1);
-            }
-         });
-        
+            $query->where('first_name','LIKE','%'.request('search').'%')
+            ->orWhere('last_name','LIKE','%'.request('search').'%')
+            ->orWhere('first_name','LIKE','%'.request('search'))
+            ->orWhere('last_name','LIKE'.request('search').'%')
+            ->orWhere('phone_number','LIKE','%'.request('search').'%');
+                //  ->orWhere('products.model','LIKE','%'.request('search').'%');
+            });
         return UserResource::collection($query->paginate($per_page));
     }
 
@@ -137,6 +133,17 @@ class UserController extends Controller
 
        }
            
+    }
+    /**
+     * changing the status of the user
+     */
+
+    public function changeUserStatus($user_id){
+        $user=User::find($user_id);
+        $user->active=request()->status;
+        $user->save();
+        return response()->json(200);
+
     }
 
    

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ShopPaginatedResource extends JsonResource
+class ShopSearchResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,14 +15,14 @@ class ShopPaginatedResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'id'=>$this->id,
+           // 'id'=>$this->product->id,
             'name'=>$this->shop_name,
             'region'=>$this->region,
             'zone'=>$this->zone,
             'woreda'=>$this->woreda,
-            'first_name'=>$this->manager->first_name,
-            'last_name'=>$this->manager->last_name,
-            'shop_status'=>$this->is_active,
+            'first_name'=>$this->shop->manager->first_name,
+             'last_name'=>$this->shop->manager->last_name,
+            'shop_status'=>$this->shop->is_active,
 
             // 'kebele'=>$this->kebele,
             // 'latitude'=>$this->latitude,
@@ -35,7 +35,7 @@ class ShopPaginatedResource extends JsonResource
             // "region": "Amhara",
             // "zone": "Bahir Dar",
           //  "woreda": "Bahir Dar",
-            "city"=>"Bahir Dar",
+            "city"=>$this->city,
 
         ];
     }

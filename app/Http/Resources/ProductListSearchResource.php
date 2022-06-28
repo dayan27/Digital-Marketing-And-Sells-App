@@ -17,23 +17,16 @@ class ProductListSearchResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'model'=>$this->model,
-            'brand'=>$this->brand,
-           // 'warranty'=>$this->warranty,
-            //'function'=>$this->function,
-            //'application'=>$this->application,
-          //  'material'=>$this->material,
-           // 'effciency'=>$this->effciency,
-           // 'maxiumum_supply_voltage'=>$this->maxiumum_supply_voltage,
-            //'maxiumum_current_power'=>$this->maxiumum_current_power,
-            'price'=>$this->price,
-             'qty'=>$this->qty,
-             
-             'is_featured'=>$this->is_featured,
+            'model'=>$this->product->model,
+            'brand'=>$this->product->brand,
+            'price'=>$this->product->price,
+             'qty'=>$this->product->qty,
+             'is_featured'=>$this->product->is_featured,
             
-            'weight'=>$this->weight,
+            'weight'=>$this->product->weight,
             //'description'=>$this->description,
-           // 'images'=> new ImageListResource($this->images()->inRandomOrder()->first()) ?? null,
+            'category'=> new CategoryResource($this->product->category) ?? null, 
+            'images'=> new ImageListResource($this->product->images()->inRandomOrder()->first()) ?? null,
             //'category'=> new CategoryResource($this->category) ?? null
 
 
