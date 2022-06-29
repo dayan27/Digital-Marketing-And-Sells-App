@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\App;
 
 class FeaturedProductResource extends JsonResource
 {
@@ -14,11 +15,16 @@ class FeaturedProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        //App::setLocale('oro');
+        
+
+
         return[
             'id'=>$this->id,
             'name'=>$this->name,  
             'price'=>$this->price,
-            'description'=>$this->description,
+            
+            'description'=> $this->translate(request('lang')),
             'number_of_review'=>$this->reviews()->count(),
             'five_star'=>$this->reviews()->where('rate',5)->count(),
             'four_star'=>$this->reviews()->where('rate',4)->count(),

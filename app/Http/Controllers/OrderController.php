@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
 use App\Models\Product;
+use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -68,6 +69,29 @@ class OrderController extends Controller
                 });
            return  orderResource::collection($query->get());
     }
+
+      /**
+       * search order of a specific shop by pin and name
+       */
+
+      public function searchShopOrder(){
+      $query= Order::query()->where('shop_id',request()->user()->shop->id);
+        $query->where('pin',request('search'))
+             ->orwhere(function($query){
+                 $query = $query->whereHas('user', function (Builder $query) {
+                     $query = $query->where('users.first_name', '=', request('search'));
+                 });
+             });
+             //return $query->get();
+        return  orderResource::collection($query->get());
+ }
+
+
+
+
+
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -274,13 +298,29 @@ class OrderController extends Controller
     //     $order->order_status_id=request()->order_status_id;
 
     // }
-
+  /**
+   * change order status and if the order status is completed
+   * it will subtract the quantity which is order item contain
+   */
 
     public function changeOrderStatus($order_id){
         $order=Order::find($order_id);
        $status_id= OrderStatus::where('status_name',request()->status)->first()->id;
          $order->order_status_id=$status_id;
          $order->save();
+         if(request()->status=='completed'){
+            $shop=Shop::find(request()->shop_id);
+
+            foreach(request()->items as $item){
+                $shopProd=$shop->products()->wherePivot('product_id',$item['product_id'])->first();
+                $tqty=$shopProd->pivot->qty-$item['qty'];
+                $shop->products()->updateExistingPivot($item['product_id'],['qty'=>$tqty]);
+
+
+
+            }
+
+         }
         
 
     }

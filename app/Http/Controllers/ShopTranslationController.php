@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\OrginalProductResource;
 use App\Http\Resources\OrginalShopTranslationResource;
+use App\Http\Resources\ShopTranslationAdminResource;
 use App\Models\Shop;
 use App\Models\ShopTranslation;
 use Illuminate\Http\Request;
@@ -28,7 +29,7 @@ class ShopTranslationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
@@ -41,9 +42,16 @@ class ShopTranslationController extends Controller
     public function show(Request $request, $shop_id)
     {
         $shop=Shop::find($shop_id);
-        $shop->translate($request->language);
-      // return $productTrans;
-      return new OrginalShopTranslationResource($shop);
+       $shop= $shop;
+      // return $productTrans;  $request->language
+      if($shop){
+        return new ShopTranslationAdminResource($shop);
+      }
+      else{
+        $shop;
+      }
+      //
+     
     }
 
     /**

@@ -18,8 +18,23 @@ class ManagerController extends Controller
      */
     public function index()
     {
-       $manager= Manager::all();
-      return ManagerResource::collection($manager);
+        $per_page=request()->per_page;
+        $query= Manager::query();
+      
+        $query=$query->when(request('search'),function($query){
+
+            $query->where('first_name','LIKE','%'.request('search').'%')
+            ->orWhere('last_name','LIKE','%'.request('search').'%')
+            ->orWhere('first_name','LIKE','%'.request('search'))
+            ->orWhere('last_name','LIKE'.request('search').'%');
+            //->orWhere('phone_number','LIKE','%'.request('search').'%');
+                //  ->orWhere('products.model','LIKE','%'.request('search').'%');
+            });
+        return ManagerResource::collection($query->paginate($per_page));
+
+
+
+      //return ManagerResource::collection($manager);
 
     }
 

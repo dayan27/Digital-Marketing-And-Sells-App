@@ -43,6 +43,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/shop_products',ShopeProductController::class);
   //  Route::get('/shop_product/{id}',[ShopController::class,'getShopProducts']);
   Route::apiResource('/orders',OrderController::class);
+  Route::post('/search_shop_order',[OrderController::class,'searchShopOrder']);
+
 
 
 });
@@ -57,8 +59,6 @@ Route::post('/set_featured_products/{id}',[ProductController::class,'setFeatured
 Route::post('/set_product_active/{id}',[ProductController::class,'setActive']);
 Route::post('/set_order_status/{id}',[OrderController::class,'changeOrderStatus']);
 Route::get('/product_filter',[ProductController::class,'productFilter']);
-
-
 
 Route::apiResource('/images',ImageController::class);
 Route::apiResource('/managers',ManagerController::class);
@@ -77,12 +77,12 @@ Route::post('/add_products/{id}',[ShopController::class,'addProducts']);
 Route::post('/add_featured_products/{id}',[ProductController::class,'addFeaturedProduct']);
 Route::get('/get_featured_product_detail/{id}',[ProductController::class,'getFeaturedProductDetail']);
 
+Route::post('/get_featured_product_translation_detail/{id}',[ProductController::class,'getFeaturedProductDetailTranslate']);
 
 //shop related
 Route::apiResource('/shops',ShopController::class);
 Route::get('/search',[ProductController::class,'search']);
 Route::apiResource('/shop_translations',ShopTranslationController::class);
-
 
 Route::post('/login',[LoginController ::class,'login']);
 //->middleware('verified');
@@ -93,8 +93,6 @@ Route::post('/user_login',[UserLoginController ::class,'login']);
 //->middleware('phone_verified');
 Route::post('/user_forgot',[UserForgotPasswordController::class,'forgot']);
 Route::post('/user_reset/{token}',[UserForgotPasswordController::class,'resetPassword']);
-
-
 //role and permission
 Route::apiResource('/roles',RoleController::class);
 Route::apiResource('/permissions',PermissionController::class);
@@ -109,6 +107,7 @@ Route::post('/search_shops',[ShopController::class,'search']);
 
 
 
+
 Route::apiResource('/payment_types',PaymentTypeController::class);
 Route::post('/send_sms',[UserController::class,'sendSmsNotificaition']);
 Route::post('/send_sms_not',[UserController::class,'sendSms']);
@@ -119,12 +118,8 @@ Route::post('/verify_otp', [UserLoginController::class, 'checkOtp']);
 
 
 Route::apiResource('/users',UserController::class);
-
-
-
 Route::post('/accept_product_request',[ShopeProductController::class,'acceptProductRequest']);
  Route::post('/order_products',[OrderController::class,'orderProduct']);
-
  Route::get('/all_orders',[OrderController::class,'allOrders']);
 
 

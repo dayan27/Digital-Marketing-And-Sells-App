@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ShopProductListResource;
 use App\Http\Resources\ShopProductResource;
+use App\Models\Product;
 use App\Models\ProductDistributionData;
 use App\Models\Shop;
 use App\Models\ShopeProduct;
@@ -90,9 +91,29 @@ class ShopeProductController extends Controller
      * @param  \App\Models\ShopeProduct  $shopeProduct
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ShopeProduct $shopeProduct)
+    public function update(Request $request,$id)
     {
-        //
+        $shop= Shop::find($id);
+        $shop_data = [
+            $request->language => [
+                'shop_name'=>$request->shop_name,
+                'region'=>$request->region,
+                'zone'=>$request->zone,
+                'woreda'=>$request->woreda,
+                'city'=>$request->city,
+                
+            ],
+         ];
+     
+         $shop=$shop->update($shop_data);
+         if($shop){
+            return response()->json('sucessfully added translation',200); 
+
+         }
+         else{
+            return response()->json('something want wrong',500); 
+
+         }
     }
 
     /**
@@ -130,6 +151,11 @@ class ShopeProductController extends Controller
                                                             ->where('status','pending')
                                                         ->update(['status'=>'accepted']);
                     }
+                   $id= $product['product_id'];
+                   $prod=Product::find($id);
+                   $prod->qty=$prod->qty - $product['qty'];
+                 // return $product->qty=$p;
+                   $prod->save();
                 }
                     return response()->json('succsesfully accepted',200);
 

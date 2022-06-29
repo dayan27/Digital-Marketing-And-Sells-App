@@ -20,13 +20,13 @@ class OrginalShopTranslationResource extends JsonResource
             'longitude'=>$this->longitude,
             'is_active'=>$this->is_active,         
             'manager_id'=>$this->manager_id,
-            'shop_name'=>$this->translate(request()->language)->shop_name,
+             'shop_name'=>$this->translate(request()->language)->shop_name,
             'region'=>$this->translate(request()->language)->region,
             'zone'=>$this->translate(request()->language)->zone,
             'woreda'=>$this->translate(request()->language)->woreda,
             'city'=>$this->translate(request()->language)->city,
-            //'images'=>ImageResource::collection($this->images) ?? null,
-          //  'translation'=>new ProductTranslationResource( $this->translate(request()->language))
+            'images'=>ImageResource::collection($this->images) ?? null,
+           'translation'=>new ProductTranslationResource( $this->translate(request()->language))
             
 
 

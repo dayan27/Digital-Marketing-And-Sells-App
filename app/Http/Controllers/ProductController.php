@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AllProductResource;
 use App\Http\Resources\DetailProductResource;
+use App\Http\Resources\DetailProductTranslationResource;
 use App\Http\Resources\FeaturedProductResource;
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ProductListSearchResource;
@@ -164,19 +165,27 @@ class ProductController extends Controller
        * display all featured products
        */
       public function getFeaturedProducts(){
-       $product= Product::where('is_featured','1')->with('reviews')->get();
-        return FeaturedProductResource::collection($product);
+       //$product= Product::where('is_featured','1')->with('reviews')->get();
+       $prodTrans=Product::where('is_featured','1')->get();
+
+       //return $prodTrans->translate(request('lang'));
+        return FeaturedProductResource::collection($prodTrans);
       }
       /**
-       * display a detail of certian product
+       * display a detail of certian product translation
        */
 
-      public function getFeaturedProductDetail($product_id){
-        $product=Product::find($product_id)->load('reviews');
-        return new DetailProductResource($product);
+      public function getFeaturedProductDetail($id){
+        // $product=Product::find($product_id)->load('reviews');
+        // return new DetailProductResource($product);
+        $prod=Product::find($id);
+        $productTrans=$prod->translate(request('lang'));
+     //return  $productTrans=ProductTranslation::where('product_id',)->get();
+        return new DetailProductTranslationResource($productTrans);
         
 
       }
+      
        /**
        * display all  products of certian category
        */
