@@ -63,8 +63,8 @@ class User extends Authenticatable
         return $this->hasMany(Order::class);
     }
 
-    public function shop()
+    public function shops()
     {
-        return $this->belongsTo(Shop::class);
+        return $this->belongsToMany(Shop::class,'orders');
     }
 }

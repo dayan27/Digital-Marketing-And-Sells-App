@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductListResource;
 use App\Http\Resources\ShopProductListResource;
+use App\Http\Resources\ShopProductListSearchResource;
 use App\Http\Resources\ShopProductResource;
+use App\Http\Resources\ShopSearchResource;
 use App\Models\Product;
 use App\Models\ProductDistributionData;
+use App\Models\ProductTranslation;
 use App\Models\Shop;
 use App\Models\ShopeProduct;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,6 +24,8 @@ class ShopeProductController extends Controller
      */
     public function index()
     {
+        $per_page=request()->per_page;
+
         $shop=request()->user()->shop;
       // return $shop->products;
         $query= $shop->products();
@@ -56,7 +61,7 @@ class ShopeProductController extends Controller
              
         
        });
-      return   ShopProductListResource::collection($query->paginate());
+      return   ShopProductListResource::collection($query->paginate($per_page));
     }
 
     /**
@@ -196,5 +201,28 @@ class ShopeProductController extends Controller
         // }
 
           
+    }
+
+    public function searchProductShop(){
+        $per_page=request()->per_page;
+    
+        // $shop=request()->user()->shop;
+        // $products=$shop->products();
+        //$query=$products->translate;
+        //$query=ProductTranslation::query();
+        $query=ProductTranslation::query();
+
+        $query=$query->when(filled('search'),function($query){
+
+            $query->where('name','LIKE','%'.request('search').'%');
+            $query = $query->whereHas('product', function (Builder $query) {
+                $query = $query->whereHas('shops', function (Builder $query) {
+                    $query->where('product_shop.shop_id', '=', request()->user()->shop->id);
+                });          
+            
+            });        
+            
+            });
+            return  ShopProductListSearchResource ::collection($query->paginate($per_page));
     }
 }

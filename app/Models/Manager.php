@@ -29,6 +29,7 @@ class Manager extends Authenticatable implements MustVerifyEmail
         'manager_city',
         'manager_kebele',
         'house_no',
+        'type'
     ];
 
     public function phone_numbers()

@@ -26,22 +26,12 @@ class ShopController extends Controller
         $per_page=request()->per_page;
         $query= Shop::query();
       
-          $query->when(request('filter'),function($query){
-
-            if (request('filter') == 'active') {
-               $query= $query->where('is_active', '=', 1);
- 
-            }elseif (request('filter') == 'inactive') {
-                $query= $query->where('is_active', '=', 0);
-            }  
-            elseif(request('filter') == 'all'){
-                $query= Shop::query();
-            }   
-
-         });
         return  ShopPaginatedResource::collection($query->paginate($per_page));
     }
 
+    public function getShopsForUserSide(){
+        return Shop::all();
+    }
     public function search(){
        // $per_page=request()->per_page;
         $query=ShopTranslation::query();
@@ -66,6 +56,7 @@ class ShopController extends Controller
         $account=Account::create(['user_name'=>$request->email,'password'=>Hash::make($request->last_name.'1234') ]);
         $data=$request->all();
         $data['account_id']=$account->id;
+        $data['type']='agent';
         $manager= Manager::create($data);
         if($manager){
          $phone_numbers=[];
@@ -88,7 +79,7 @@ class ShopController extends Controller
         $data=[];
         $data=$request->all();
         $data['manager_id']=$manager->id;
-        $shop=shop::create($data);
+        $shop=Shop::create($data);
         
     }
 

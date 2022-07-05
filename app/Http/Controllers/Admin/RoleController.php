@@ -66,7 +66,10 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        Role::find($id)->delete();
+        $role=Role::find($id);
+        $role->permissions()->detach();
+        $role->users()->detach();
+        $role->delete();
     }
     /**
      *
@@ -76,8 +79,7 @@ class RoleController extends Controller
 
     public function assignPermissions(Request $request,$role_id){
         $role=Role::find($role_id);
-       return $role->syncPermissions($request->permissions);
-
+        return $role->syncPermissions($request->permissions);
 
     }
 }

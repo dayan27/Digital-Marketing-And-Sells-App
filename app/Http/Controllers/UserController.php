@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Notifications\OTPNotification;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Twilio\Rest\Client;
@@ -34,6 +37,22 @@ class UserController extends Controller
         return UserResource::collection($query->paginate($per_page));
     }
 
+    public function getShopUser(){
+        $per_page=request()->per_page;
+        $query= User::query()->whereHas('shops', function (Builder $query) {
+                   $query= $query->where('shops.id',request()->user()->shop->id);
+        });    
+        $query=$query->when(request('search'),function($query){
+
+            $query->where('first_name','LIKE','%'.request('search').'%')
+            ->orWhere('last_name','LIKE','%'.request('search').'%')
+            ->orWhere('first_name','LIKE','%'.request('search'))
+            ->orWhere('last_name','LIKE'.request('search').'%')
+            ->orWhere('phone_number','LIKE','%'.request('search').'%');
+                //  ->orWhere('products.model','LIKE','%'.request('search').'%');
+            });
+        return UserResource::collection($query->paginate($per_page));
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -47,13 +66,18 @@ class UserController extends Controller
         $data['verification_code']=$otp;
         $data['password']=Hash::make($request->password);
         
-       $user= User::create($data);
-       $this->sendSms($otp,$user->phone_number);
+        $user= User::create($data);
+        try {
+            $this->sendSms($otp,$user->phone_number);
+            return response()->json($user,201) ;
+
+        } catch (\Throwable $th) {
+            return response()->json('unable to verify ur phone',404) ;
+        }
 
       //$this->sendSmsNotificaition();
 
    //Notification::send($user,new OTPNotification($otp));
-       return response()->json($user,201) ;
     }
 
     public function sendSmsNotificaition()
@@ -99,7 +123,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return User::find($id);
+          return $user= User::find($id);
+        
     }
 
     /**
@@ -111,7 +136,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return User::find($id)->update($request->all());
+        $user= User::find($id);
+        $user->update($request->all());
+        return $user;
     }
 
     /**
@@ -142,9 +169,17 @@ class UserController extends Controller
         $user=User::find($user_id);
         $user->active=request()->status;
         $user->save();
-        return response()->json(200);
+        return response()->json('sucessfuly changed',200);
 
     }
 
-   
+ public function registerUserAdminSide(Request $request){
+    $data=$request->all();
+    $otp=rand(1000,9999);
+    //$data['verification_code']=$otp;
+   $data['password']=Hash::make($request->last_name.'1234');
+    
+   $user= User::create($data);
+ }
+    
 }

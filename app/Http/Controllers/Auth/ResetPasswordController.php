@@ -31,7 +31,13 @@ class ResetPasswordController extends Controller
         // Validate the token
             $tokenData = DB::table('password_resets')->where('token', $token)->first();
         // Redirect the user back to the password reset request form if the token is invalid
-            if (!$tokenData)
+        $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $tokenData->created_at)->diffInMinutes(\Carbon\Carbon::now());
+            
+        if($time_to_expire > 5){
+            return response()->json('expired token',401);
+
+        }
+          if (!$tokenData)
             return response()->json('not valid token',401);
 
             $user = Account::where('user_name', $tokenData->email)->first();
@@ -52,7 +58,7 @@ class ResetPasswordController extends Controller
             //Send Email Reset Success Email
             // if ($this->sendSuccessEmail($tokenData->email)) {
 
-            //     $token=$user->createToken('auth_token')->plainTextToken;
+                 $token=$user->createToken('auth_token')->plainTextToken;
                 return response()->json([
                     'access_token'=>$token,
                    'user'=>$user,

@@ -18,12 +18,13 @@ class CreateManagersTable extends Migration
             $table->string("first_name");
             $table->string("last_name");
             $table->string("email");
-            $table->string("manager_region");
-            $table->string("manager_zone");
-            $table->string("manager_woreda");
-            $table->string("manager_city");
-            $table->string("manager_kebele");
-            $table->string("house_no");
+            $table->string("manager_region")->nullable();
+            $table->string("manager_zone")->nullable();
+            $table->string("manager_woreda")->nullable();
+            $table->string("manager_city")->nullable();
+            $table->string("manager_kebele")->nullable();
+            $table->string("house_no")->nullable();
+            $table->string("type");
             $table->foreignId('account_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             $table->timestamps();

@@ -22,9 +22,12 @@ class LoginController extends Controller
         ]);
 
         $user_acc=Account::where('user_name',$request->email)->first();
-        $user=Manager::where('email',$request->email)->first();
-        if (! $user ) {
-            return response()->json([
+        $user=Manager::where('email',$request->email)
+        ->where('type','system_user')
+        ->where('is_active',1)
+                        ->first();
+        if (! $user || !$user_acc ) {
+                            return response()->json([
                 'message'=>' incorrect email and password',
                 ]
                ,404 );
@@ -43,7 +46,7 @@ class LoginController extends Controller
        // return response()->json($Manager,200);
         return response()->json([
             'access_token'=>$token,
-            'user'=>$user,
+            'user'=>$user->load('phone_numbers'),
             'shop_id'=>$user->shop->id?? null,
         ],200);
 
@@ -52,9 +55,7 @@ class LoginController extends Controller
     public function logout(Request $request){
         //  return  $request->user();
             $request->user()->currentAccessToken()->delete();
-            return response()->json([
-                'message'=>$request->user(),
-            ],200);
+            return response()->json([$request->user()],200);
 
         }
 
@@ -66,16 +67,17 @@ class LoginController extends Controller
                 'new_password'=>'required',
 
             ]);
-
+          
+            $user_acc=Account::where('user_name',$request->user()->email)->first();
             $user=Manager::where('email',$request->user()->email)->first();
-            if (! $user ) {
+            if (! $user || !$user_acc ) {
                 return response()->json([
                     'message'=>' incorrect credentials ',
                     ]
                    ,404 );
             }
 
-            $check=Hash::check($request->old_password, $user->password);
+            $check=Hash::check($request->old_password, $user_acc->password);
             if (! $check ) {
                 return response()->json([
                     'message'=>' incorrect old password ',
@@ -83,8 +85,8 @@ class LoginController extends Controller
                    ,404 );
             }
 
-            $user->password=Hash::make($request->new_password);
-            $user->save();
+            $user_acc->password=Hash::make($request->new_password);
+            $user_acc->save();
             return response()->json([
                 'message'=>'Successfully  Reset',
                 ]

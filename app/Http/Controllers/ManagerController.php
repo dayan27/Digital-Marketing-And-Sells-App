@@ -19,7 +19,7 @@ class ManagerController extends Controller
     public function index()
     {
         $per_page=request()->per_page;
-        $query= Manager::query();
+        $query= Manager::query()->where('type','agent');
       
         $query=$query->when(request('search'),function($query){
 
@@ -106,6 +106,7 @@ class ManagerController extends Controller
            $phoneNum->phone_number=$phoneNumber;
            $phoneNum->manager_id=$manager->id;
            $phoneNum->save();
+           $phoneNum->refresh();
            $phone_number['phone_number']=$phoneNum->phone_number;
            $phone_numbers[]=$phone_number;
 
@@ -139,9 +140,5 @@ class ManagerController extends Controller
  */
 
 
-     public function assignRoleToEmployee(Request $request,$id){
-        $user=Manager::find($id);
-        return  $user->assignRole($request->role_id);
 
-    }
 }

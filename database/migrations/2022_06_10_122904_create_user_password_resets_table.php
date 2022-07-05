@@ -18,7 +18,7 @@ class CreateUserPasswordResetsTable extends Migration
             $table->string('phone_number')->index();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-            $table->timestamps();
+           // $table->timestamps();
         });
     }
 

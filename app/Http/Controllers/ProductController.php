@@ -50,14 +50,12 @@ class ProductController extends Controller
             elseif(request('filter') == 'all'){
                 $query= Product::query();
             }
-            elseif(request('filter') == 'category'){
-                $query = $query->whereHas('category', function (EloquentBuilder $query) {
-                    $query->where('categories.id', '=', request('filter'));
-                });
-            }
-               
-          
-         });
+        
+         })->when(request('category'),function($query){
+            $query = $query->whereHas('category', function (EloquentBuilder $query) {
+                $query->where('categories.id', '=', request('category'));
+            });
+         }) ;
         return   ProductListResource::collection($query->paginate($per_page));
       
     }
@@ -72,6 +70,20 @@ class ProductController extends Controller
                 //  ->orWhere('products.model','LIKE','%'.request('search').'%');
             });
             return   ProductListSearchResource::collection($query->paginate($per_page));
+    }
+
+    public function searchFromUser($id){
+        $per_page=request()->per_page;
+
+        $query=ProductTranslation::query();
+        $query=$query->when(request('search'),function($query){
+
+            $query->where('name','LIKE','%'.request('search').'%');
+                //  ->orWhere('products.model','LIKE','%'.request('search').'%');
+            })->whereHas('product', function (EloquentBuilder $query) use($id) {
+                $query->where('products.category_id', '=', $id);
+            });
+            return   ProductListSearchResource::collection($query->get());
     }
 
     /**
@@ -190,8 +202,9 @@ class ProductController extends Controller
        * display all  products of certian category
        */
       public function getProducts($category_id){
-         $product= Product::where('category_id',$category_id)->with('reviews')->get();
-         return AllProductResource::collection($product);
+        $per_page=request()->per_page;
+         $product= Product::where('category_id',$category_id)->with('reviews');
+         return AllProductResource::collection($product->paginate($per_page));
        }
        /**
         * to  make a product featured or remove 

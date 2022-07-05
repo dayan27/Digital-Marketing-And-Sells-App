@@ -25,6 +25,7 @@ class ManagerResource extends JsonResource
             'manager_woreda'=>$this->manager_woreda,
             'manager_kebele'=>$this->manager_kebele,
             'house_no'=>$this->house_no,
+            'is_active'=>$this->is_active,
            // 'phone_numbers'=>$this->phone_numbers,
           // 'phone_numbers'=>PhoneNumberResource::collection($this->phone_numbers)
             'phone_numbers'=>PhoneNumberResource::collection($this->phone_numbers),

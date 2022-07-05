@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Manager;
 use App\Traits\ApiMessage;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class EmailVerificationController extends Controller
         }
 
         //  return $request->route('id');
-        $user= Admin::find($request->id);
+        $user= Manager::find($request->id);
 
         if(! $user){
             return response()->json(["msg" => "no id provided."], 401);

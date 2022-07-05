@@ -6,6 +6,7 @@ use App\Http\Resources\CustomerOrderResource;
 use App\Http\Resources\OrderDetailResource;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
+use App\Models\OrderAddress;
 use App\Models\OrderItem;
 use App\Models\OrderStatus;
 use App\Models\Product;
@@ -220,10 +221,7 @@ class OrderController extends Controller
        $order=new Order();
        $order->pin=rand(1000,9999);
        $order->pickup_date=date('Y-m-d',strtotime($request->pickup_date));
-       
-            $order->user_id=$request->user_id;
-
-    
+       $order->user_id=$request->user_id;
        $order->order_status_id=OrderStatus::where('status_name','pending')->first()->id;
        $order->payment_type_id=1;
        $order->shop_id=$request->shop_id;
@@ -239,6 +237,21 @@ class OrderController extends Controller
         
        }
        $order->total_price=$totalPrice;
+
+       if ($request->is_new) {
+    
+        $newaddress= OrderAddress::create([
+            'user_region'=> $request->user_region,
+            'user_zone'=> $request->user_zone,
+            'user_woreda'=> $request->user_woreda,
+            'phone_number'=> $request->phone_number,
+        ]);
+        $order->order_address_id=$newaddress->id;
+
+        }else {
+            $order->order_address_id=$request->address_id;
+
+         }
        $order->save();
 
        foreach($orderItems as $item){

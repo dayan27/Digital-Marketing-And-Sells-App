@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryTranslationResource;
 use App\Http\Resources\ProductListResource;
 use App\Models\Category;
 use App\Models\Manager;
@@ -58,8 +59,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-         $category->update($request->all());
-         return $category;
+       // $product= Product::find($id);
+        $category_data = [
+            $request->language => [
+                'title'=>$request->title,
+                'description'=>$request->description,        
+            ],
+         ];
+     
+         $category=$category->update($category_data);
+          if($category){
+            return response()->json('sucessfully added translation',200); 
+          }else{
+            return response()->json('something want wrong',500); 
+           }
+        
     }
 
     /**
@@ -71,5 +85,17 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
+    }
+
+    public function categoryDetail($id)
+    {
+        $category=Category::find($id);
+        $category= $category;
+        //$category_trans=$category->translate(request()->language);
+        if($category) {
+            return new CategoryTranslationResource($category);            
+        }else{
+           return $category;
+          }
     }
 }

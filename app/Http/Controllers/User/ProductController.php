@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DetailProductTranslationResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\ProductUserResource;
 use App\Models\Product;
@@ -39,8 +40,14 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product=Product::find($id);
-        return  new ProductUserResource($product);
+        // $product=Product::find($id);
+        // return  new ProductUserResource($product);
+          // return new DetailProductResource($product);
+          $prod=Product::find($id);
+          $productTrans=$prod->translate(request('lang'));
+       //return  $productTrans=ProductTranslation::where('product_id',)->get();
+          return new DetailProductTranslationResource($productTrans);
+          
     }
 
     /**

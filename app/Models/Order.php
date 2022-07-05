@@ -35,5 +35,9 @@ class Order extends Model
         return $this->belongsTo(Shop::class);
     }
 
+    public function address()
+    {
+        return $this->belongsTo(OrderAddress::class,'order_address_id');
+    }
 
 }
