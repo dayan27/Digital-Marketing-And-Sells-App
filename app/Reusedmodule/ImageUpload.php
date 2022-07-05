@@ -32,7 +32,30 @@ class ImageUpload {
         }
     }
 
+    public function categoryImageUpload($file,$category_id){
 
+        try {
+            $images=[];
+
+
+               $name = Str::random(5).time().'.'.$file->extension();
+               $file->move(public_path().'/productimages/', $name);
+               $image=new Image();
+               $image->image_path=$name;
+               $image->category_id=$category_id;
+               $image->save();
+               $image->refresh();
+               $img['id'] = $image->id;
+               $img['path'] = asset('/categoryimages').'/'.$name;
+             //  $images[]=$img;
+        
+
+        return $img;
+            } catch (\Throwable $th) {
+
+                return $th;
+        }
+    }
 
 }
 

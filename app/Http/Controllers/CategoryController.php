@@ -7,6 +7,7 @@ use App\Http\Resources\ProductListResource;
 use App\Models\Category;
 use App\Models\Manager;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 
 class CategoryController extends Controller
@@ -31,10 +32,19 @@ class CategoryController extends Controller
     {
 //         $role = Role::create(['name' => 'writer']);
 //    return $permission = Permission::create(['name' => 'edit articles']);
-         return Category::create($request->all());
-        //  $id=7;
-        //  $manager=Manager::find($id);
-        //  $manager->assignRole
+
+         $file=$request->image;
+         $category= Category::create($request->all());
+         $name = Str::random(5).time().'.'.$request->file->extension();
+         $file->move(public_path().'/categoryimages/', $name);
+         $category->image_path=$name;
+         $category->save();
+
+         
+         $category->image_path = asset('/categoryimages').'/'.$name;
+       
+         return $category;
+  
 
     }
 

@@ -9,20 +9,25 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DashboardController extends Controller
+class ShopDashbordController extends Controller
 {
+
     public function getData(){
-        $total_customer=User::count();
-        $total_order=Order::count();
-        $total_product=Product::count();
+
+        $user=request()->user();
+
+
+        $total_sales=Order::where('shop_id',$user->shop->id)->sum('total_price');
+        $total_order=Order::where('shop_id',$user->shop->id)->count();
+        $total_product= $user->shop->products()->count();
       
      return    [
-            'total_customer'=>$total_customer,
+            'total_sales'=>$total_sales,
             'total_order'=>$total_order,
             'total_product'=>$total_product,
         ];
 
-
+  
      }
 
      public function getPichartData(){
@@ -42,11 +47,16 @@ class DashboardController extends Controller
             $duration= \Carbon\Carbon::now()->subYears(1);
 
         }
+        $user=request()->user();
+
         $grouped=  DB::table('order_items')
         ->where('order_items.created_at', '>=', $duration)
         ->join('products','order_items.product_id','=','products.id')
+        ->join('product_shop','product_shop.product_id','=','products.id')
+        ->join('shops','shops.id','=','product_shop.shop_id')
         ->join('product_translations','products.id','=','product_translations.product_id')
         ->where('product_translations.locale', 'en')
+        ->where('shops.id',$user->shop->id)
    
                  ->select([DB::raw('count(products.id) as `product_count`'),DB::raw('product_translations.name') ])
                  ->groupBy('products.id')
@@ -87,7 +97,10 @@ class DashboardController extends Controller
             $time_format='Y';
 
         }
-        $days = Order::where('created_at', '>=', $duration)
+
+        $user=request()->user();
+
+        $days = Order::where('shop_id',$user->shop->id)->where('created_at', '>=', $duration)
         ->orderBy('created_at')
         ->get()
         ->groupBy(function ($val) use($time_format){
@@ -95,9 +108,12 @@ class DashboardController extends Controller
         });
 
         foreach ($days as $key => $value) {
-            $all[$key]= $value->count();
+            
+            $all[$key]= $value->sum('total_price');
         }
 
         return $all;
      }
 }
+
+

@@ -25,6 +25,7 @@ use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ShopDashbordController;
 use App\Http\Controllers\ShopeProductController;
 use App\Http\Controllers\ShopTranslationController;
 use App\Http\Controllers\SubscriptionEmailController;
@@ -65,6 +66,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
   //////////////////////===================below are userside route==============////////////
   Route::post('/change_user_password',[UserLoginController::class,'changePassword']);
+
+  ////////dashboard
+Route::get('/shop_dashboard',[ShopDashbordController::class,'getData']);
+Route::get('/shop_dashboard_bargraph',[ShopDashbordController::class,'getBarGraphData']);
+Route::get('/shop_dashboard_piechart',[ShopDashbordController::class,'getPichartData']);
 
 
 });
