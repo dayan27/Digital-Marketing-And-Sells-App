@@ -16,6 +16,9 @@ class AgentMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+         if ($request->user()->type != 'agent') {
+            return response()->json('un authorized user',401);
+          }
         return $next($request);
     }
 }
