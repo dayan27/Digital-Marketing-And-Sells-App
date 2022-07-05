@@ -9,7 +9,7 @@ class SubscriptionEmailController extends Controller
 {
     public function subscribe_email(){
         $email=new SubscriptionEmail();
-        $email->subscribe_email=request()->email;
+        $email->email=request()->email;
         $email->save();
         return response()->json('subscribed',200);
 

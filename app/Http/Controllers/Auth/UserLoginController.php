@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Manager;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use App\Traits\SendToken;
 class UserLoginController extends Controller
 {
+    use SendToken;
 
     public function login(Request $request){
 
@@ -34,10 +36,20 @@ class UserLoginController extends Controller
 
         $check=Hash::check($request->password, $user->password);
         if (! $check ) {
-            return response()->json([
-                'message'=>' incorrect  and password',
-                ]
+            return response()->json(
+                 'incorrect  and password'
                ,404 );
+        }
+
+        if(!$user->verified){
+
+            $otp=rand(1000,9999);
+
+            $user->verification_code=$otp;
+            $user->save();
+            $this->sendResetToken($otp,$request->phone_number);
+            return response()->json(
+                 'unverified',201 );
         }
 
         $token=$user->createToken('auth_token')->plainTextToken;
@@ -50,6 +62,7 @@ class UserLoginController extends Controller
 
      }
 
+
     public function logout(Request $request){
         //  return  $request->user();
             $request->user()->currentAccessToken()->delete();
@@ -59,7 +72,7 @@ class UserLoginController extends Controller
 
         }
 
-        public function checkOtp(Request $request){
+        public function verifyPhone(Request $request){
             $user=User::where('phone_number',$request->phone_number)->where('verification_code',$request->code)->first();
             if($user){
             // return $user;
@@ -84,30 +97,33 @@ class UserLoginController extends Controller
         public function checkResetOtp(Request $request,$token){
             $tokenData = DB::table('user_password_resets')->where('token', $token)->first();
 
+            if (!$tokenData )
+            //&& ($tokenData->phone_number != $request->phone_number)
+            return response()->json('Invalide token',201);
+
+
             //     $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $tokenData->created_at);
             //      $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', Carbon::now());
     
     
             //  // $diff_in_minutes = $to->diffInMinutes($from);
             // Redirect the user back to the password reset request form if the token is invalid
-            $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $tokenData->created_at)->diffInMinutes(\Carbon\Carbon::now());
+            $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',\Carbon\Carbon::now() )->diffInMinutes($tokenData->created_at);
             
             if($time_to_expire > 5){
-                return response()->json('expired token',401);
+                return response()->json('The expired token',201);
 
             }  
-            if (!$tokenData )
-                //&& ($tokenData->phone_number != $request->phone_number)
-                return response()->json('not valid token',401);
-    
+          
                  return response()->json([
                      'code'=>$token,
                     
                  ],200);
              
-            
-
-        }
+     }  
+         
+ 
+        
 
         public function changePassword(Request $request){
 
@@ -143,7 +159,6 @@ class UserLoginController extends Controller
         }
 
 
-        public function forgotPassword(){
-            
-        }
-  }
+       
+    }
+  

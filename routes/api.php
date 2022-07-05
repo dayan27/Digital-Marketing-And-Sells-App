@@ -161,7 +161,7 @@ Route::post('/send_sms',[UserController::class,'sendSmsNotificaition']);
 Route::post('/send_sms_not',[UserController::class,'sendSms']);
 
 
-Route::post('/verify_otp', [UserLoginController::class, 'checkOtp']);
+Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
 Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
 Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
 
