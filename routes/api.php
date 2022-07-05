@@ -48,6 +48,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
+  
+  Route::middleware(['system_user'])->group(function () {
+
+  });
+
+  Route::middleware(['customer'])->group(function () {
+
+  });
+
+
+  Route::middleware(['agent'])->group(function () {
+
+  });
+
     Route::post('/logout',[LoginController::class,'logout']);
     Route::apiResource('/shop_products',ShopeProductController::class);
   //  Route::get('/shop_product/{id}',[ShopController::class,'getShopProducts']);
