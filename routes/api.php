@@ -52,6 +52,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
   
   Route::middleware(['system_user'])->group(function () {
 
+        ////////dashboard
+    Route::get('/dashboard',[DashboardController::class,'getData']);
+    Route::get('/dashboard_bargraph',[DashboardController::class,'getBarGraphData']);
+    Route::get('/dashboard_piechart',[DashboardController::class,'getPichartData']);
+
+
+    ////////revuenue
+    Route::get('/revenue',[RevenueController::class,'getData']);
+    Route::get('/revenue_bargraph',[RevenueController::class,'getBarGraphData']);
+    Route::get('/revenue_piechart',[RevenueController::class,'getPichartData']);
+
+
   });
 
   Route::middleware(['customer'])->group(function () {
@@ -60,6 +72,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 
   Route::middleware(['agent'])->group(function () {
+
+      ////////dashboard
+      Route::get('/shop_dashboard',[ShopDashbordController::class,'getData']);
+      Route::get('/shop_dashboard_bargraph',[ShopDashbordController::class,'getBarGraphData']);
+      Route::get('/shop_dashboard_piechart',[ShopDashbordController::class,'getPichartData']);
 
   });
 
@@ -82,10 +99,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
   //////////////////////===================below are userside route==============////////////
   Route::post('/change_user_password',[UserLoginController::class,'changePassword']);
 
-  ////////dashboard
-Route::get('/shop_dashboard',[ShopDashbordController::class,'getData']);
-Route::get('/shop_dashboard_bargraph',[ShopDashbordController::class,'getBarGraphData']);
-Route::get('/shop_dashboard_piechart',[ShopDashbordController::class,'getPichartData']);
 
 
 });
@@ -98,17 +111,6 @@ Route::post('/add_user_by_admin',[UserController::class,'registerUserAdminSide']
 
 Route::apiResource('/reviews',ReviewController::class);
 
-
-////////dashboard
-Route::get('/dashboard',[DashboardController::class,'getData']);
-Route::get('/dashboard_bargraph',[DashboardController::class,'getBarGraphData']);
-Route::get('/dashboard_piechart',[DashboardController::class,'getPichartData']);
-
-
-////////revuenue
-Route::get('/revenue',[RevenueController::class,'getData']);
-Route::get('/revenue_bargraph',[RevenueController::class,'getBarGraphData']);
-Route::get('/revenue_piechart',[RevenueController::class,'getPichartData']);
 
 
 Route::apiResource('/system_users',SystemUserController::class);
