@@ -48,7 +48,9 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Permission::find($id)->update($request->name);
+       return Permission::find($id)->update($request->name);
+  
+        
     }
 
     /**
