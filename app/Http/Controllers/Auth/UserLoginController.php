@@ -41,7 +41,7 @@ class UserLoginController extends Controller
                ,404 );
         }
 
-        if(!$user->verified){
+        if($user->verified == 0){
 
             $otp=rand(1000,9999);
 
@@ -73,7 +73,7 @@ class UserLoginController extends Controller
         }
 
         public function verifyPhone(Request $request){
-            $user=User::where('phone_number',$request->phone_number)->where('verification_code',$request->code)->first();
+           return $user=User::where('phone_number',$request->phone_number)->where('verification_code',$request->code)->first();
             if($user){
             // return $user;
                $user->verification_code=null;
@@ -87,7 +87,8 @@ class UserLoginController extends Controller
                      'access_token'=>$token,
                      'user'=>$user,
                  ],200);
-                     }else{
+                    
+                }else{
                 return response()->json('Error inValid Otp',401);
 
             }
