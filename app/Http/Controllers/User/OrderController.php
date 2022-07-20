@@ -25,12 +25,17 @@ class OrderController extends Controller
 
         $user=User::find($user_id);       
         //  return $user->orders->load('address');
-
+         $add=[];
          foreach ($user->orders as $order) {
            
             $addess=$order->address;
             if ($addess) {
-                $add[]=$addess;
+
+                if(in_array($addess, $add)) {
+                    // exists
+                }  else {
+                    $add[]=$addess;
+                }                
 
             }
          }
@@ -38,4 +43,25 @@ class OrderController extends Controller
          return $add;
 
     }
+
+    public function cancelOrder($order_id){
+        $order=Order::find($order_id);
+        $perv_stat=OrderStatus::find($order->order_status_id);
+
+        if($perv_stat->status_name == 'pending'){
+            $status_id= OrderStatus::where('status_name','canceled')->first()->id;
+            $order->order_status_id=$status_id;
+            $order->save();  
+
+            return response()->json('successfully canceled',200);
+        }else{
+            return response()->json('error while canceling',401);
+
+        }
+         
+
+         }
+        
+
+    
 }

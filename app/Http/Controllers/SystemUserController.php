@@ -45,16 +45,16 @@ class SystemUserController extends Controller
            $phoneNum->manager_id=$manager->id;
 
            $phoneNum->save();
-           $phone_number['id']=$phoneNum->id;
-           $phone_number['phone_number']=$phoneNum->phone_number;
-           $phone_numbers[]=$phone_number;
+        //    $phone_number['id']=$phoneNum->id;
+        //    $phone_number['phone_number']=$phoneNum->phone_number;
+           $phone_numbers[]=$phoneNum->phone_number;
 
         }
-       $manager['phone_numbers']=$phone_numbers;
+       $manager->phone_numbers=$phone_numbers;
 
        }
 
-      // $manager->sendEmailVerificationNotification();
+       $manager->sendEmailVerificationNotification();
 
        return $manager;
     }

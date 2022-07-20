@@ -78,6 +78,7 @@ class ShopDashbordController extends Controller
 
      public function getBarGraphData(){
 
+        $all=[];
         $duration= \Carbon\Carbon::now()->subWeeks(1);
         $time_format='l';
         if (request('time') == 'week') {

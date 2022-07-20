@@ -16,8 +16,9 @@ class DetailProductTranslationResource extends JsonResource
     {
         return[
             //'id'=>$this->product_id,
-            'name'=>$this->name,
+            'name'=>$this->name??null,
             'model'=>$this->product->model,
+            'id'=>$this->product->id,
             'brand'=>$this->product->brand,
             'weight'=>$this->product->weight,
             'discount'=>$this->product->discount,

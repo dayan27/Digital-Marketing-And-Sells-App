@@ -159,6 +159,12 @@ class UserLoginController extends Controller
         }
 
 
-       
+       public function resend(Request $request){
+        $otp=rand(1000,9999);
+        $user=User::where('phone_number',$request->phone_number)->first();
+        $user->verification_code=$otp;
+        $user->save();
+        $this->sendResetToken($otp,$request->phone_number);
+       }
     }
   

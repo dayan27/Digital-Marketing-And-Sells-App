@@ -233,7 +233,7 @@ class OrderController extends Controller
         $id=$item['id'];
          $item_price=Product::find($id)->price;
         //$item_price=$item->prod->price;
-       $totalPrice=$totalPrice + (double)$item['price']*(double)$item['qty'];
+       $totalPrice=$totalPrice + (double)$item_price*(double)$item['qty'];
         
        }
        $order->total_price=$totalPrice;
