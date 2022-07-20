@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\ShopPaginatedResource;
 use App\Http\Resources\ShopProductResource;
 use App\Http\Resources\ShopSearchResource;
+use App\Http\Resources\ShopTranslationResource;
 use App\Models\Account;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
@@ -30,7 +31,9 @@ class ShopController extends Controller
     }
 
     public function getShopsForUserSide(){
-        return Shop::all();
+        $shops= Shop::all();
+        return  ShopTranslationResource::collection( $shops);
+
     }
     public function search(){
        // $per_page=request()->per_page;

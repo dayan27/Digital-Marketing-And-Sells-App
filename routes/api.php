@@ -127,6 +127,8 @@ Route::post('/set_featured_products/{id}',[ProductController::class,'setFeatured
 Route::post('/set_product_active/{id}',[ProductController::class,'setActive']);
 Route::post('/set_order_status/{id}',[OrderController::class,'changeOrderStatus']);
 Route::get('/product_filter',[ProductController::class,'productFilter']);
+Route::get('/user_categories',[::class,'categoryDetail']);
+
 
 Route::apiResource('/images',ImageController::class);
 Route::apiResource('/managers',ManagerController::class);
