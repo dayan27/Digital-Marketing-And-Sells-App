@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\ProductHistory;
 use App\Http\Controllers\Admin\ProductHistoryController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Auth\AgentLoginController;
-use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -18,7 +17,6 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderStatusController;
-use App\Http\Controllers\Payment\ChapaController;
 use App\Http\Controllers\PaymentTypeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDistributionDataController;
@@ -32,7 +30,6 @@ use App\Http\Controllers\ShopeProductController;
 use App\Http\Controllers\ShopTranslationController;
 use App\Http\Controllers\SubscriptionEmailController;
 use App\Http\Controllers\SystemUserController;
-use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProductController as UserProductController;
 use App\Http\Controllers\UserController;
@@ -52,19 +49,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
-
-Route::get('/user', function (Request $request) {
-  $user= $request->user();
-  $token=$user->createToken('auth_token')->plainTextToken;
-  //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
-   // return response()->json($Manager,200);
-
-   $user->role=$user->roles()->first()->load('permissions');
-    return response()->json([
-        'access_token'=>$token,
-        'user'=>$user->load('phone_numbers'),
-    ],200);
-});
   
   Route::middleware(['system_user'])->group(function () {
 
@@ -116,11 +100,10 @@ Route::get('/user', function (Request $request) {
   Route::post('/change_user_password',[UserLoginController::class,'changePassword']);
 
 
-///user
-Route::get('/user_orders/{user_id}',[UserOrderController::class,'getUserOrders']);
-Route::get('/user_order_address/{user_id}',[UserOrderController::class,'getUserOrderAddress']);
 
 });
+Route::get('/user_orders/{user_id}',[UserOrderController::class,'getUserOrders']);
+Route::get('/user_order_address/{user_id}',[UserOrderController::class,'getUserOrderAddress']);
 
 Route::get('/sales',[SalesController::class,'getSales']);
 Route::apiResource('/users',UserController::class);
@@ -137,16 +120,13 @@ Route::apiResource('/system_users',SystemUserController::class);
 
 
 Route::apiResource('/categories',CategoryController::class);
-Route::apiResource('/user_categories',UserCategoryController::class);
 Route::get('/category_detail/{id}',[CategoryController::class,'categoryDetail']);
 Route::get('/get_featured_products',[ProductController::class,'getFeaturedProducts']);
 Route::get('/get_products/{id}',[ProductController::class,'getProducts']);
 Route::post('/set_featured_products/{id}',[ProductController::class,'setFeaturedProduct']);
 Route::post('/set_product_active/{id}',[ProductController::class,'setActive']);
 Route::post('/set_order_status/{id}',[OrderController::class,'changeOrderStatus']);
-Route::post('/cancel_order/{id}',[UserOrderController::class,'cancelOrder']);
 Route::get('/product_filter',[ProductController::class,'productFilter']);
-Route::get('/user_categories',[::class,'categoryDetail']);
 
 
 Route::apiResource('/images',ImageController::class);
@@ -178,13 +158,9 @@ Route::get('/search_from_user/{id}',[ProductController::class,'searchFromUser'])
 Route::apiResource('/shop_translations',ShopTranslationController::class);
 
 Route::post('/login',[LoginController ::class,'login']);
-//->middleware('verified');
 Route::post('/agent_login',[AgentLoginController ::class,'login']);
 //->middleware('verified');
-Route::get('/verify',[EmailVerificationController::class,'verify'])->name('verification.verify');
-
 Route::post('/forgot',[ForgotPasswordController::class,'forgot']);
-Route::post('/resend_verification_code',[UserLoginController::class,'resend']);
 Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
 //user
 Route::post('/user_login',[UserLoginController ::class,'login']);
@@ -218,12 +194,3 @@ Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email'
 
 
 
-Route::get('/', function () {
-  return view('welcome');
-});
-// The route that the button calls to initialize payment
-
-Route::post('pay', [ChapaController::class,'initialize'])->name('pay');
-
-// The callback url after a payment
-Route::get('callback/{reference}', [ChapaController::class,'callback'])->name('callback');

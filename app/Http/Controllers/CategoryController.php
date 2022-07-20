@@ -110,4 +110,5 @@ class CategoryController extends Controller
            return $category;
           }
     }
+    
 }
