@@ -33,6 +33,14 @@ class AgentLoginController extends Controller
                ,404 );
         }
 
+        if ($user->email_verified_at == null) {
+            $user->sendEmailVerificationNotification();
+            
+            return response()->json([
+                'message'=>' Please Verify Ur Email Verification Link Sent to ur email',
+                ]
+               ,201 );
+        }
         $check=Hash::check($request->password, $user_acc->password);
         if (! $check ) {
             return response()->json([

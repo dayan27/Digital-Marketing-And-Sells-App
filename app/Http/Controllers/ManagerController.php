@@ -70,7 +70,7 @@ class ManagerController extends Controller
 
        }
 
-       $manager->sendEmailVerificationNotification();
+      // $manager->sendEmailVerificationNotification();
 
        return $manager;
     }
@@ -130,7 +130,9 @@ class ManagerController extends Controller
     {
     //    $phone_numbers= $manager->phone_numbers;
     //    foreach(){
+
         $manager->phone_numbers()->delete();
+        $manager->account()->delete();
         $manager->delete();
         return response()->json('sucessfully deleted',200);
     }

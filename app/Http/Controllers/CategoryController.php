@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserSide\CategoryResource;
 use App\Http\Resources\CategoryTranslationResource;
 use App\Http\Resources\ProductListResource;
 use App\Models\Category;
@@ -19,6 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+//        return CategoryResource::collection(Category::all());
         return Category::all();
     }
 
@@ -35,7 +37,7 @@ class CategoryController extends Controller
 
          $file=$request->image;
          $category= Category::create($request->all());
-         $name = Str::random(5).time().'.'.$request->file->extension();
+         $name = Str::random(5).time().'.'.$file->extension();
          $file->move(public_path().'/categoryimages/', $name);
          $category->image_path=$name;
          $category->save();

@@ -26,7 +26,19 @@ class ShopController extends Controller
         //return Shop::all()->load('manager');
         $per_page=request()->per_page;
         $query= Shop::query();
-      
+        $query=$query->when(request('filter'),function($query){
+            
+            $filter=request('filter');
+            if ($filter == 'active') {
+                $query=$query->where('is_active',1);
+                
+            }else if ($filter == 'inactive') {
+                $query=$query->where('is_active',0);
+            }else if ($filter == 'all') {
+               
+            }
+        });
+           
         return  ShopPaginatedResource::collection($query->paginate($per_page));
     }
 

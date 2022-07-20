@@ -31,12 +31,12 @@ class ResetPasswordController extends Controller
         // Validate the token
             $tokenData = DB::table('password_resets')->where('token', $token)->first();
         // Redirect the user back to the password reset request form if the token is invalid
-        $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $tokenData->created_at)->diffInMinutes(\Carbon\Carbon::now());
+        // $time_to_expire= \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',\Carbon\Carbon::now() )->diffInMinutes($tokenData->created_at);
             
-        if($time_to_expire > 5){
-            return response()->json('expired token',401);
+        // if($time_to_expire > 5){
+        //     return response()->json('expired token',401);
 
-        }
+        // }
           if (!$tokenData)
             return response()->json('not valid token',401);
 

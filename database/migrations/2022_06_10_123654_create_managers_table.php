@@ -24,6 +24,7 @@ class CreateManagersTable extends Migration
             $table->string("manager_city")->nullable();
             $table->string("manager_kebele")->nullable();
             $table->string("house_no")->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->string("type");
             $table->foreignId('account_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 

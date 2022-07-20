@@ -231,6 +231,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+         //'Chapa' =>  Chapa\Chapa\Facades\Chapa 
 
     ],
 

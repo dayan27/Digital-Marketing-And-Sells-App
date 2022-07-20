@@ -24,9 +24,9 @@ class OrderItemsResource extends JsonResource
             // 'review'=> new ReviewResource($this->product->reviews()->where('user_id',56)->first())
            // 'model'=>$this->product->model,
         //    'comment_title'=>$this->product->reviews()->where('user_id',56)->first()->comment_title,
-           'comment'=>$this->product->reviews()->where('user_id',56)->first()->comment ??null,
-           'rate'=>$this->product->reviews()->where('user_id',56)->first()->rate ??null,
-           'date'=>$this->product->reviews()->where('user_id',56)->first()->created_at ??null,
+           'comment'=>$this->product->reviews()->where('user_id',request()->user()->id)->first()->comment ??null,
+           'rate'=>$this->product->reviews()->where('user_id',request()->user()->id)->first()->rate ??null,
+           'date'=>$this->product->reviews()->where('user_id',request()->user()->id)->first()->created_at ??null,
         ];
     }
 }

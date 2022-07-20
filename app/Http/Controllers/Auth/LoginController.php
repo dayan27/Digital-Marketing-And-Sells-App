@@ -26,11 +26,22 @@ class LoginController extends Controller
         ->where('type','system_user')
         ->where('is_active',1)
                         ->first();
+
+                      
         if (! $user || !$user_acc ) {
                             return response()->json([
                 'message'=>' incorrect email and password',
                 ]
                ,404 );
+        }
+
+        if ($user->email_verified_at == null) {
+            $user->sendEmailVerificationNotification();
+            
+            return response()->json([
+                'message'=>' Please Verify Ur Email Verification Link Sent to ur email',
+                ]
+               ,201 );
         }
 
         $check=Hash::check($request->password, $user_acc->password);
@@ -44,10 +55,11 @@ class LoginController extends Controller
         $token=$user->createToken('auth_token')->plainTextToken;
       //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
        // return response()->json($Manager,200);
+
+       $user->role=$user->roles()->first()->load('permissions');
         return response()->json([
             'access_token'=>$token,
             'user'=>$user->load('phone_numbers'),
-            'shop_id'=>$user->shop->id?? null,
         ],200);
 
      }

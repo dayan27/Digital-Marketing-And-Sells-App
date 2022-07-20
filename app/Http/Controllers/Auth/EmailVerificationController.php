@@ -27,7 +27,7 @@ class EmailVerificationController extends Controller
 
     public function verify(Request $request)
     {
-        if (!$request->hasValidSignature(false)) {
+        if (!$request->hasValidSignature(true)) {
             return response()->json(["msg" => "Invalid/Expired url provided."], 401);
         }
 
@@ -39,7 +39,7 @@ class EmailVerificationController extends Controller
 
         }
         if (! hash_equals((string) $request->id, (string) $user->getKey())) {
-            throw new App\Http\Controllers\Auth\AuthorizationException;
+            throw new  AuthorizationException;
         }
 
         if (! hash_equals((string) $request->hash, sha1($user->getEmailForVerification()))) {
@@ -48,7 +48,14 @@ class EmailVerificationController extends Controller
 
 
         if ($user->hasVerifiedEmail()) {
-            return redirect(url(env('FRONTEND_URL')).'/login');
+
+            if($user->type='system_user'){
+                return redirect(url(env('FRONTEND_MANAGER_URL')).'/login');
+
+            }else if(($user->type='agent')){
+                return redirect(url(env('FRONTEND_AGENT_URL')).'/agent_login');
+
+            }
 
             // return $this->sendError('Already Verified','');
 

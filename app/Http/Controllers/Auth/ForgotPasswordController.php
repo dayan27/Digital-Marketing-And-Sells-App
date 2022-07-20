@@ -45,7 +45,13 @@ class ForgotPasswordController extends Controller
         $user = Manager::where('email', $email)->first();
 
         //Generate, the password reset link. The token generated is embedded in the link
-        $link = 'http://10.161.176.171:8080/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
+
+        if ($user->type == 'system_user') {
+        $link = env('FRONTEND_MANAGER_URL').'/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
+
+        }else if ($user->type =='agent') {
+            $link = env('FRONTEND_AGENT_URL').'/reset-password' .'/'. $token . '?email=' . urlencode($user->email);
+        }
 
            try {
             //Here send the link with CURL with an external email API
