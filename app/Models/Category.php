@@ -16,7 +16,7 @@ class Category extends Model implements TranslatableContract
     public $fillable=[
         'title',
         'description',
-       
+       'image_path'
     ];
      
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductListResource;
+use App\Http\Resources\ShopProductDetailResource;
 use App\Http\Resources\ShopProductListResource;
 use App\Http\Resources\ShopProductListSearchResource;
 use App\Http\Resources\ShopProductResource;
@@ -89,6 +90,13 @@ class ShopeProductController extends Controller
         return new ShopProductResource($shop->load('products','manager'));
     }
 
+    public function shopProductDetail(Request $request, $p_id){
+        $shop=$request->user()->shop; 
+        $product= $shop->products()->where('products.id',$p_id)->first();
+        return new ShopProductDetailResource($product);
+
+        
+    }
     /**
      * Update the specified resource in storage.
      *

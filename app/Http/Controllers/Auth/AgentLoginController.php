@@ -39,7 +39,7 @@ class AgentLoginController extends Controller
             return response()->json([
                 'message'=>' Please Verify Ur Email Verification Link Sent to ur email',
                 ]
-               ,201 );
+               ,400 );
         }
         $check=Hash::check($request->password, $user_acc->password);
         if (! $check ) {

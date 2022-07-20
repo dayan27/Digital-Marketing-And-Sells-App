@@ -50,7 +50,7 @@ class EmailVerificationController extends Controller
         if ($user->hasVerifiedEmail()) {
 
             if($user->type='system_user'){
-                return redirect(url(env('FRONTEND_MANAGER_URL')).'/login');
+                return redirect(url(env('FRONTEND_MANAGER_URL').'/login'));
 
             }else if(($user->type='agent')){
                 return redirect(url(env('FRONTEND_AGENT_URL')).'/agent_login');
@@ -77,10 +77,13 @@ class EmailVerificationController extends Controller
            // return  response()->json('verified',200) ;
                     //  return redirect(url(env('FRONTEND_URL')).'/login');
         }
-      //  return  response()->json('verified',200) ;
+        if($user->type='system_user'){
+            return redirect(url(env('FRONTEND_MANAGER_URL').'/login'));
 
-        // return request()->wantsJson() ? response()->json() :
-        return redirect(url(env('FRONTEND_URL')).'/login');
+        }else if(($user->type='agent')){
+            return redirect(url(env('FRONTEND_AGENT_URL').'/agent_login'));
+
+        }
 
     }
 

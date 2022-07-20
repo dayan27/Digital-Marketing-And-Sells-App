@@ -15,8 +15,9 @@ class ShopTranslationResource extends JsonResource
     public function toArray($request)
     {
         return[
-            'kebele'=>$this->kebele,
-            'latitude'=>$this->latitude,
+          'id'=>$this->id,
+          'kebele'=>$this->kebele,
+          'latitude'=>$this->latitude,
             'longitude'=>$this->longitude,
             'is_active'=>$this->is_active,         
             'manager_id'=>$this->manager_id,

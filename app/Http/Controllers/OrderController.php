@@ -200,7 +200,7 @@ class OrderController extends Controller
      */
     public function orderDetail($id){
        $order=Order::find($id);
-      return new OrderDetailResource($order);
+      return new OrderDetailResource ($order);
     //    $order_items=OrderItem::where()
     //    foreach()
 
@@ -322,9 +322,9 @@ class OrderController extends Controller
          $order->order_status_id=$status_id;
          $order->save();
          if(request()->status=='completed'){
-            $shop=Shop::find(request()->shop_id);
+            $shop=Shop::find($order->shop_id);
 
-            foreach(request()->items as $item){
+            foreach($order->order_items as $item){
                 $shopProd=$shop->products()->wherePivot('product_id',$item['product_id'])->first();
                 $tqty=$shopProd->pivot->qty-$item['qty'];
                 $shop->products()->updateExistingPivot($item['product_id'],['qty'=>$tqty]);

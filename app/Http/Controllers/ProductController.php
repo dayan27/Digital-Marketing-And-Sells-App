@@ -151,6 +151,7 @@ class ProductController extends Controller
         $images=$product->images;
         foreach($images as $image){
             $image->delete();
+            
         }
         $product->delete();
         return response()->json('sucessfully deleted',200); 

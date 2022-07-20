@@ -30,11 +30,13 @@ use App\Http\Controllers\ShopeProductController;
 use App\Http\Controllers\ShopTranslationController;
 use App\Http\Controllers\SubscriptionEmailController;
 use App\Http\Controllers\SystemUserController;
+use App\Http\Controllers\User\CategoryController as UserCategoryController;
 use App\Http\Controllers\User\OrderController as UserOrderController;
 use App\Http\Controllers\User\ProductController as UserProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\EmailVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +51,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
+  Route::get('/user', function (Request $request) {
+    $user= $request->user();
+    $token=$user->createToken('auth_token')->plainTextToken;
+    //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
+     // return response()->json($Manager,200);
   
+     $user->role=$user->roles()->first()->load('permissions');
+      return response()->json([
+          'access_token'=>$token,
+          'user'=>$user->load('phone_numbers'),
+      ],200);
+  });
+
   Route::middleware(['system_user'])->group(function () {
 
         ////////dashboard
@@ -84,6 +98,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('/shop_products',ShopeProductController::class);
   //  Route::get('/shop_product/{id}',[ShopController::class,'getShopProducts']);
   Route::apiResource('/orders',OrderController::class);
+
   Route::post('/add_user_order',[UserOrderController::class,'addUserOrder']);
   
   Route::post('/search_shop_order',[OrderController::class,'searchShopOrder']);
@@ -99,6 +114,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
   //////////////////////===================below are userside route==============////////////
   Route::post('/change_user_password',[UserLoginController::class,'changePassword']);
 
+  Route::get('/shop_product_detail/{id}',[ShopeProductController::class,'shopProductDetail']);
 
 
 });
@@ -135,6 +151,7 @@ Route::apiResource('/languages',LanguageController::class);
 
 //product related
 Route::apiResource('/products',ProductController::class);
+
 Route::apiResource('/product_histories',ProductHistoryController::class);
 Route::apiResource('/product_distribution_data',ProductDistributionDataController::class);
 Route::apiResource('/user_products',UserProductController::class);
@@ -158,15 +175,18 @@ Route::get('/search_from_user/{id}',[ProductController::class,'searchFromUser'])
 Route::apiResource('/shop_translations',ShopTranslationController::class);
 
 Route::post('/login',[LoginController ::class,'login']);
+
 Route::post('/agent_login',[AgentLoginController ::class,'login']);
 //->middleware('verified');
 Route::post('/forgot',[ForgotPasswordController::class,'forgot']);
 Route::post('/reset/{token}',[ResetPasswordController::class,'resetPassword']);
+Route::post('/resend_verification_code',[UserLoginController::class,'resend']);
 //user
 Route::post('/user_login',[UserLoginController ::class,'login']);
 //->middleware('phone_verified');
 Route::post('/user_forgot',[UserForgotPasswordController::class,'forgot']);
 Route::post('/user_reset/{token}',[UserForgotPasswordController::class,'resetPassword']);
+Route::get('/verify',[EmailVerificationController::class,'verify'])->name('verification.verify');
 //role and permission
 Route::apiResource('/roles',RoleController::class);
 Route::apiResource('/permissions',PermissionController::class);
@@ -188,6 +208,8 @@ Route::post('/send_sms_not',[UserController::class,'sendSms']);
 Route::post('/verify_otp', [UserLoginController::class, 'verifyPhone']);
 Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkResetOtp']);
 Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
+Route::apiResource('/user_categories',UserCategoryController::class);
+
 
 
 

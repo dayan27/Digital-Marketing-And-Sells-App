@@ -50,6 +50,8 @@ class ManagerController extends Controller
         $account=Account::create(['user_name'=>$request->email,'password'=>Hash::make($request->last_name.'1234') ]);
         $data=$request->all();
         $data['account_id']=$account->id;
+        $data['type']='agent';
+
         $manager= Manager::create($data);
        if($manager){
         $phone_numbers=[];
@@ -70,7 +72,7 @@ class ManagerController extends Controller
 
        }
 
-      // $manager->sendEmailVerificationNotification();
+       $manager->sendEmailVerificationNotification();
 
        return $manager;
     }

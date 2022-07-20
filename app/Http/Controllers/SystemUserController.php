@@ -35,6 +35,8 @@ class SystemUserController extends Controller
         $data['account_id']=$account->id;
         $data['type']='system_user';
         $manager= Manager::create($data);
+        $manager->sendEmailVerificationNotification();
+
         if($manager){
         $phone_numbers=[];
         $phoneNumbers=$request->phone_numbers;
@@ -54,7 +56,6 @@ class SystemUserController extends Controller
 
        }
 
-       $manager->sendEmailVerificationNotification();
 
        return $manager;
     }
