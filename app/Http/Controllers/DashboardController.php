@@ -78,13 +78,13 @@ class DashboardController extends Controller
         }else if (request('time') == 'month') {
 
             $duration= \Carbon\Carbon::now()->subMonths(1);
-            $time_format='M';
+            $time_format='l';
 
 
         }else if (request('time') == 'year') {
 
             $duration= \Carbon\Carbon::now()->subYears(1);
-            $time_format='Y';
+            $time_format='F';
 
         }
         $days = Order::where('created_at', '>=', $duration)

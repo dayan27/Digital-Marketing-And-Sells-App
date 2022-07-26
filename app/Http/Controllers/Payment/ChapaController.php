@@ -72,7 +72,7 @@ class ChapaController extends Controller
 
         if ($payment['status'] !== 'success') {
             // notify something went wrong
-            return response()->json('failed to load payment page',201);
+            return response()->json('failed to load payment page',400);
         }
 
         return redirect($payment['data']['checkout_url']);
@@ -102,7 +102,7 @@ class ChapaController extends Controller
 
         else{
             //oopsie something ain't right.
-            return 'error';
+            return response()->json('failed to verify payment',400);
         }
 
 

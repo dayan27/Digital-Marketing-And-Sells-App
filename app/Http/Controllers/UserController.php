@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Notifications\OTPNotification;
+use App\Traits\SendToken;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ use Twilio\Rest\Client;
 
 class UserController extends Controller
 {
+    use SendToken;
     /**
      * Display a listing of the resource.
      *
@@ -62,13 +64,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data=$request->all();
-        $otp=rand(1000,9999);
+        $otp=rand(100000,999999);
         $data['verification_code']=$otp;
         $data['password']=Hash::make($request->password);
         
         $user= User::create($data);
         try {
-            $this->sendSms($otp,$user->phone_number);
+            $this->sendResetToken($otp,$request->phone_number);
             return response()->json($user,201) ;
 
         } catch (\Throwable $th) {
@@ -177,9 +179,10 @@ class UserController extends Controller
     $data=$request->all();
     $otp=rand(1000,9999);
     //$data['verification_code']=$otp;
-   $data['password']=Hash::make($request->last_name.'1234');
+    $data['password']=Hash::make($request->last_name.'1234');
     
-   $user= User::create($data);
+  return User::create($data);
+   
  }
     
 }

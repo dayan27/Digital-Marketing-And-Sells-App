@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductHistory;
 use App\Http\Controllers\Admin\ProductHistoryController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserMessageController;
 use App\Http\Controllers\Auth\AgentLoginController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -37,6 +38,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Payment\ChapaController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,10 +118,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('/change_user_password',[UserLoginController::class,'changePassword']);
 
   Route::get('/shop_product_detail/{id}',[ShopeProductController::class,'shopProductDetail']);
+Route::get('/user_orders/{user_id}',[UserOrderController::class,'getUserOrders']);
 
 
 });
-Route::get('/user_orders/{user_id}',[UserOrderController::class,'getUserOrders']);
 Route::get('/user_order_address/{user_id}',[UserOrderController::class,'getUserOrderAddress']);
 
 Route::get('/sales',[SalesController::class,'getSales']);
@@ -210,8 +213,18 @@ Route::post('/verify_reset_otp/{token}', [UserLoginController::class, 'checkRese
 Route::post('/subscribe', [SubscriptionEmailController::class, 'subscribe_email']);
 Route::apiResource('/user_categories',UserCategoryController::class);
 
+Route::post('/broadcast_message', [UserMessageController::class,'sendUserMessage']);
 
+///////////////////Chapa payment path
+Route::get('/', function () {
+  return view('welcome');
+});
+// The route that the button calls to initialize payment
 
+Route::post('pay', [ChapaController::class,'initialize'])->name('pay');
+
+// The callback url after a payment
+Route::get('callback/{reference}', [ChapaController::class,'callback'])->name('callback');
 
 
 

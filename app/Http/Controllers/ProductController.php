@@ -136,7 +136,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $product->update($request->all());
+        $data=$request->all();
+        $data['weight']=(double)$request->weight;
+       // $data['date_of_production']=date('M-m-d',strtotime($request->date_of_production));
+       // $product= Product::create($data);
+
+        $product->update($data);
         return $product;
     }
 

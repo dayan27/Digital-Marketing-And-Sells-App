@@ -23,7 +23,7 @@ class CreateOrdersTable extends Migration
             $table->foreignId('payment_type_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('shop_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('order_addresse_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('order_addresse_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
 
             
             $table->timestamps();
