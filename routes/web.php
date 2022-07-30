@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 
 
 // The page that displays the payment form
+Route::get('/', function () {
+    return view('welcome');
+  });

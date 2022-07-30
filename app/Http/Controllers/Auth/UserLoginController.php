@@ -159,7 +159,6 @@ class UserLoginController extends Controller
                ,200 );
         }
 
-
        public function resend(Request $request){
         $otp=rand(1000,9999);
         $user=User::where('phone_number',$request->phone_number)->first();

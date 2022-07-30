@@ -15,6 +15,7 @@ use Twilio\Rest\Client;
 
 class UserController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      *
