@@ -51,6 +51,7 @@ class ManagerController extends Controller
         $data=$request->all();
         $data['account_id']=$account->id;
         $data['type']='agent';
+
         $manager= Manager::create($data);
        if($manager){
         $phone_numbers=[];

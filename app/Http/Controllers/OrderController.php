@@ -53,7 +53,7 @@ class OrderController extends Controller
             }  
       //  return   ProductListResource::collection($query->paginate($per_page));
     });
- return OrderResource::collection($query->paginate($per_page));
+ return OrderResource::collection($query->latest()->paginate($per_page));
 
 
 }
@@ -129,7 +129,7 @@ class OrderController extends Controller
 
         }
        $order->order_status_id=OrderStatus::where('status_name','pending')->first()->id;
-       $order->payment_type_id=1;
+       $order->payment_type_id=2;
        $order->shop_id=$user->shop->id;
     //   ret Str::random(10)
        
@@ -200,7 +200,7 @@ class OrderController extends Controller
      */
     public function orderDetail($id){
        $order=Order::find($id);
-      return new OrderDetailResource($order);
+      return new OrderDetailResource ($order);
     //    $order_items=OrderItem::where()
     //    foreach()
 
@@ -223,7 +223,7 @@ class OrderController extends Controller
        $order->pickup_date=date('Y-m-d',strtotime($request->pickup_date));
        $order->user_id=$request->user_id;
        $order->order_status_id=OrderStatus::where('status_name','pending')->first()->id;
-       $order->payment_type_id=1;
+       $order->payment_type_id=2;
        $order->shop_id=$request->shop_id;
     //   ret Str::random(10)
        
@@ -301,7 +301,7 @@ class OrderController extends Controller
       //  return   ProductListResource::collection($query->paginate($per_page));
       // return OrderResource::collection(Order::where('shop_id',request()->user()->shop->id)->get());
        });
-     return OrderResource::collection($query->paginate($per_page));
+     return OrderResource::collection($query->latest()->paginate($per_page));
     }
     /***
      * change the status of the order
@@ -322,18 +322,21 @@ class OrderController extends Controller
          $order->order_status_id=$status_id;
          $order->save();
          if(request()->status=='completed'){
-            $shop=Shop::find(request()->shop_id);
-
-            foreach(request()->items as $item){
-                $shopProd=$shop->products()->wherePivot('product_id',$item['product_id'])->first();
-                $tqty=$shopProd->pivot->qty-$item['qty'];
+            $shop=Shop::find($order->shop_id);
+              // return $order->order_items;
+            foreach($order->order_items as $item){
+                $shopProd=$shop->products()->where('products.id',$item['product_id'])->first();
+            //   return  $item;
+              $tqty=$shopProd->pivot->qty-$item['quantity'];
+              if ($tqty < 0) {
+                 $tqty=0;
+            }
                 $shop->products()->updateExistingPivot($item['product_id'],['qty'=>$tqty]);
-
-
 
             }
 
          }
+         return response()->json('changed',200);
         
 
     }

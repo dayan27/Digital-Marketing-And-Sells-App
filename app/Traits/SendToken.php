@@ -7,8 +7,8 @@ trait SendToken{
 
 public function sendResetToken($code,$phone){
             // Send an SMS using Twilio's REST API and PHP
-        $sid = "AC0428dd1cb20e48b25054618dd910df17"; // Your Account SID from www.twilio.com/console
-        $token = "49feea1cc785bbecefc404be7a9545e2"; // Your Auth Token from www.twilio.com/console
+        $sid = "ACa97d1266e9ecff907c2745c7e54de647"; // Your Account SID from www.twilio.com/console
+        $token = "66eeaa3c11451907cc7c1bec32397225"; // Your Auth Token from www.twilio.com/console
 
         try {
 
@@ -16,16 +16,15 @@ public function sendResetToken($code,$phone){
             $message = $client->messages->create(
              $phone, // Text this number
                 [
-                'from' => '+15733759362', // From a valid Twilio number
+                'from' => '+19804145549', // From a valid Twilio number
                 'body' => 'your verfication number is '.$code,
                 ]
          );
   
-         return true;
+         return 'sent';
 
-            return true;
         } catch (\Throwable $th) {
-          return false;
+          return $th;
         }
       
         }

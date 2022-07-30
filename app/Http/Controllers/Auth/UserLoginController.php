@@ -29,28 +29,30 @@ class UserLoginController extends Controller
         $user=User::where('phone_number',$request->phone_number)->first();
         if (! $user ) {
             return response()->json([
-                'message'=>' incorrect email and password',
+                'message'=>' User does not exist ',
                 ]
-               ,404 );
-        }
-
-        $check=Hash::check($request->password, $user->password);
-        if (! $check ) {
-            return response()->json(
-                 'incorrect  and password'
                ,404 );
         }
 
         if($user->verified == 0){
 
-            $otp=rand(1000,9999);
+            $otp=rand(100000,999999);
 
             $user->verification_code=$otp;
             $user->save();
             $this->sendResetToken($otp,$request->phone_number);
             return response()->json(
-                 'unverified',201 );
+                 'unverified user',201 );
         }
+
+        $check=Hash::check($request->password, $user->password);
+        if (! $check ) {
+            return response()->json(
+                 'incorrect email or password'
+               ,404 );
+        }
+
+
 
         $token=$user->createToken('auth_token')->plainTextToken;
       //  $user->profile_picture=asset('/profilepictures').'/'.$user->profile_picture;
@@ -73,8 +75,11 @@ class UserLoginController extends Controller
         }
 
         public function verifyPhone(Request $request){
-           return $user=User::where('phone_number',$request->phone_number)->where('verification_code',$request->code)->first();
-            if($user){
+            $user=User::where('phone_number',$request->phone_number)->where('verification_code',$request->code)->first();
+            if(!$user){
+                return response()->json('Error inValid Otp',201);
+
+            }
             // return $user;
                $user->verification_code=null;
                $user->verified=1;
@@ -88,10 +93,7 @@ class UserLoginController extends Controller
                      'user'=>$user,
                  ],200);
                     
-                }else{
-                return response()->json('Error inValid Otp',401);
-
-            }
+            
 
         }
 

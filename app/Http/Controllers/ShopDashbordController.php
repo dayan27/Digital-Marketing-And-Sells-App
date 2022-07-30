@@ -68,8 +68,9 @@ class ShopDashbordController extends Controller
                  $sum=$grouped->sum('product_count');
                $top1=$grouped->sortByDesc('product_count')->get(0);
                $top2=$grouped->sortByDesc('product_count')->get(1);
+             //  return is_object($top2);
                // $top4=$grouped->sortByDesc('product_count')->get(2)->product_count;
-               $top3['other']=$sum-($top1->product_count+$top2->product_count);
+               $top3['other']=$sum-($top1->product_count+($top2->product_count));
    
                return ['top1'=>$top1,'top2'=>$top2,'top3'=>$top3];
             //    return ['top1'=>$top1,'top2'=>$top2,'top3'=>$top3,'total'=>$sum];
@@ -89,13 +90,13 @@ class ShopDashbordController extends Controller
         }else if (request('time') == 'month') {
 
             $duration= \Carbon\Carbon::now()->subMonths(1);
-            $time_format='M';
+            $time_format='w';
 
 
         }else if (request('time') == 'year') {
 
             $duration= \Carbon\Carbon::now()->subYears(1);
-            $time_format='Y';
+            $time_format='F';
 
         }
 

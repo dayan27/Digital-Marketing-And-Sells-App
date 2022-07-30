@@ -16,9 +16,9 @@ class AllProductResource extends JsonResource
     {
         return[
             'id'=>$this->id,
-            'name'=>$this->translate(request('lang'))->name?? null,  
+            'name'=>$this->translate(request('lang')?? 'en')->name?? null,  
             'price'=>$this->price,
-            'description'=>$this->translate(request('lang'))->description?? null,
+            'description'=>$this->translate(request('lang') ?? 'en')->description?? null,
             'number_of_review'=>$this->reviews()->count(),
             'five_star'=>$this->reviews()->where('rate',5)->count(),
             'four_star'=>$this->reviews()->where('rate',4)->count(),

@@ -33,7 +33,7 @@ class UserForgotPasswordController extends Controller
             DB::table('user_password_resets')->where('phone_number', '=', $request->phone_number)
                ->delete();
 
-            $otp=rand(1000,9999);
+            $otp=rand(100000,999999);
             //Create Password Reset Token
             DB::table('user_password_resets')->insert([
             'phone_number' => $request->phone_number,
@@ -44,11 +44,12 @@ class UserForgotPasswordController extends Controller
             $tokenData = DB::table('user_password_resets')
             ->where('phone_number', $request->phone_number)->first();
 
-            if( $this->sendResetToken($tokenData->token,$request->phone_number)){
+            $stat=$this->sendResetToken($tokenData->token,$request->phone_number);
+            if($stat == 'sent'){
                return response()->json('reset code sent',200);
             }
             else {
-                    return response()->json('reset code not sent',404);
+                    return response()->json('reset code not sent' .$stat,404);
                  }
     }
 

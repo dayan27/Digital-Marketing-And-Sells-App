@@ -36,11 +36,11 @@ class CategoryController extends Controller
 //    return $permission = Permission::create(['name' => 'edit articles']);
 
          $file=$request->image;
-         $category= Category::create($request->all());
+         $data=$request->all();
          $name = Str::random(5).time().'.'.$file->extension();
          $file->move(public_path().'/categoryimages/', $name);
-         $category->image_path=$name;
-         $category->save();
+         $data['image_path']=$name;
+         $category= Category::create($data);
 
          
          $category->image_path = asset('/categoryimages').'/'.$name;
@@ -96,7 +96,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+  
+        if($category->products->isEmpty()){
         $category->delete();
+        }
+        else{
+            return response()->json('unable to delete',404);
+        }
     }
 
     public function categoryDetail($id)
@@ -110,4 +116,5 @@ class CategoryController extends Controller
            return $category;
           }
     }
+    
 }
