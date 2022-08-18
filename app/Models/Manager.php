@@ -48,11 +48,11 @@ class Manager extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Account::class);
     }
 
-    public function sendPasswordResetNotification($token)
-    {
-        $url = 'https://10.161.176.171:8080/reset-password?token='.$token;
-        $this->notify(new NewPasswordNotification($url));
-    }
+    // public function sendPasswordResetNotification($token)
+    // {
+    //     $url = 'https://10.161.176.171:8080/reset-password?token='.$token;
+    //     $this->notify(new NewPasswordNotification($url));
+    // }
 
     // public function sendEmailVerificationNotification()
     // {

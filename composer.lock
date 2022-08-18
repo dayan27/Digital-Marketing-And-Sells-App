@@ -213,12 +213,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Chapa-Et/chapa-laravel.git",
-                "reference": "ffb5caa4ec35d9496ca07bf97e24a42181facd5f"
+                "reference": "a97a8d6a7c92cdd126952ef39371cedab5993d98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Chapa-Et/chapa-laravel/zipball/ffb5caa4ec35d9496ca07bf97e24a42181facd5f",
-                "reference": "ffb5caa4ec35d9496ca07bf97e24a42181facd5f",
+                "url": "https://api.github.com/repos/Chapa-Et/chapa-laravel/zipball/a97a8d6a7c92cdd126952ef39371cedab5993d98",
+                "reference": "a97a8d6a7c92cdd126952ef39371cedab5993d98",
                 "shasum": ""
             },
             "require": {
@@ -270,7 +270,7 @@
             "support": {
                 "source": "https://github.com/Chapa-Et/chapa-laravel/tree/main"
             },
-            "time": "2022-06-10T00:49:29+00:00"
+            "time": "2022-06-10T00:49:48+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
@@ -8930,5 +8930,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }

@@ -235,50 +235,7 @@ class ProductController extends Controller
 
         }
 
-    //     public function productFilter(){
-            
-    //     // $shop=request()->user()->shop;
-    //     // // return $shop->products;
-    //       $query= Product::all();
-        
-    //       $query ->when(request('filter'),function($query){
   
-    //         if (request('filter') == 'outstock') {
-    //            $query= $query->where('qty', '=', 0);
-  
-    //         }elseif (request('filter') == 'instock') {
-    //             $query= $query->where('qty', '!=', 0);
-    //         }
-    //         elseif (request('filter') == 'active') {
-    //             $query= $query->where('is_active', '=', 1);
-    //         }
-    //         elseif (request('filter') == 'inactive') {
-    //             $query= $query->where('is_active', '=', 0);
-    //         }
-    //         // elseif (request('filter') == 'pending') {
-    //         //     $query= $query->where('is_active', '=', 0);
-    //         // }
-            
-    //         elseif(request('filter') == 'all'){
-    //             $query= $query;
-    //         }
-    //         elseif(request('filter') == 'category'){
-    //             $query = $query->whereHas('category', function (Builder $query) {
-    //                 $query->where('categories.id', '=', request('filter'));
-    //             });
-            
-  
-    //         }
-               
-          
-    //      });
-    //      return $query;
-
-    //   //  return   ProductListResource::collection($query->paginate());
-
-    //     }
-
-       
 
     }
 

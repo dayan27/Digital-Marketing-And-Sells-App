@@ -25,7 +25,16 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        Review::updateOrCreate($request->all());
+
+        $review=null;
+        if($request->comment_id){
+            $review= Review::find($request->comment_id);
+              $review->update($request->all());
+        }else{
+           $review=  Review::create($request->all());
+
+        }
+        return response()->json($review->id,200);
     }
 
     /**

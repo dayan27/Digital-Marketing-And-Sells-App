@@ -118,8 +118,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
   Route::post('/change_user_password',[UserLoginController::class,'changePassword']);
 
   Route::get('/shop_product_detail/{id}',[ShopeProductController::class,'shopProductDetail']);
-Route::get('/user_orders/{user_id}',[UserOrderController::class,'getUserOrders']);
-
+  Route::get('/user_orders/{user_id}',[UserOrderController::class,'getUserOrders']);
 
 });
 Route::get('/user_order_address/{user_id}',[UserOrderController::class,'getUserOrderAddress']);
@@ -222,7 +221,6 @@ Route::get('/', function () {
 // The route that the button calls to initialize payment
 
 Route::post('pay', [ChapaController::class,'initialize'])->name('pay');
-
 // The callback url after a payment
 Route::get('callback/{reference}', [ChapaController::class,'callback'])->name('callback');
 

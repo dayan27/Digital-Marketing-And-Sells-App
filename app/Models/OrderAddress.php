@@ -22,4 +22,9 @@ class OrderAddress extends Model
     'user_woreda',
     'phone_number',
 ];
+
+public function orders()
+{
+    return $this->hasMany(Order::class);
+}
 }

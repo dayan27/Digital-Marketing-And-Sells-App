@@ -9,7 +9,7 @@ use App\Http\Resources\ShopTranslationResource;
 use App\Models\Account;
 use App\Models\Manager;
 use App\Models\PhoneNumber;
-use App\Models\shop;
+use App\Models\Shop;
 use App\Models\ShopTranslation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -44,7 +44,7 @@ class ShopController extends Controller
 
     public function getShopsForUserSide(){
         $shops= Shop::all();
-        return  ShopTranslationResource::collection( $shops);
+        return  ShopTranslationResource::collection($shops);
 
     }
     public function search(){

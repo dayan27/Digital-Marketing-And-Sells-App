@@ -44,7 +44,14 @@ class ProductController extends Controller
         // return  new ProductUserResource($product);
           // return new DetailProductResource($product);
           $prod=Product::find($id);
+
+
           $productTrans=$prod->translate(request('lang'));
+
+          if(!$productTrans){
+            $productTrans=$prod->translate('en');
+
+          }
        //return  $productTrans=ProductTranslation::where('product_id',)->get();
           return new DetailProductTranslationResource($productTrans);
           

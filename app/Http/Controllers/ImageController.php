@@ -28,7 +28,7 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         
-        $iu=new ImageUpload();
+        $iu=new ImageUpload;
         $upload= $iu->multipleImageUpload($request->images,$request->product_id);
         if (count($upload) > 0) {
             return response()->json($upload,200);

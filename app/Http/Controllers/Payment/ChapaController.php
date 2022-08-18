@@ -12,7 +12,9 @@ use App\Models\Product;
 use App\Models\User;
 use Chapa\Chapa\Facades\Chapa as Chapa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class ChapaController extends Controller
 {
@@ -28,54 +30,74 @@ class ChapaController extends Controller
     }
     public function initialize(Request $request)
     {
+
+      //  return $request->all();
+        
         //This generates a payment reference
         $reference = $this->reference;
         
-        // $order_id= $this->addOrders($request);
-        // $order=Order::find($order_id);
-        // $user=User::find($request->user_id);
-      
+       $order_id= $this->orderProduct($request,$reference);
+
+
+
+       $user=User::find($request->user_id);
+
+        $orderItems=$request->products;
+        $totalPrice=0;
+        foreach($orderItems as $item){
+         $id=$item['id'];
+          $item_price=Product::find($id)->price;
+
+          $totalPrice=$totalPrice + (double)$item_price*(double)$item['qty'];
+         
+        }
+ 
         // $data = [
             
-        //     'amount' => $order->total_price,
-        //     'email' => $user->email,
+        //     'amount' => 100,
+        //     'email' => 'alemu@gmail.com',
         //     'tx_ref' => $reference,
         //     'currency' => "ETB",
         //     'callback_url' => route('callback',[$reference]),
-        //     'first_name' => $user->first_name,
-        //     'last_name' => $user->last_name,
+        //     'first_name' => '$user->first_name',
+        //     'last_name' => '$user->last_name',
         //     "customization" => [
-        //         "data" => $request->all(),
-        //         "description" => "I amma testing this"
+        //         "title" => 'Solar Order Payment',
+        //         "description" => "Pay To Rensys",
+            
         //     ]
         // ];
         
-//////////=============///
-       // Enter the details of the payment
+////////=============///
+       //Enter the details of the payment
        $data = [
             
-        'amount' => 100,
-        'email' => 'hi@negade.com',
+        'amount' => $totalPrice,
+        'email' => 'alemu@gmail.com',
         'tx_ref' => $reference,
         'currency' => "ETB",
         'callback_url' => route('callback',[$reference]),
-        'first_name' => "Israel",
-        'last_name' => "Goytom",
+        'first_name' => $user->first_name,
+        'last_name' => $user->last_name,
         "customization" => [
-            "data" => $request->all(),
-            "description" => "I amma testing this"
+        "title" => 'title',
+        "description" => "I amma testing this"
         ]
     ];
     
         $payment = Chapa::initializePayment($data);
-
+       // return $payment;
 
         if ($payment['status'] !== 'success') {
+          
+            //removing order from the databse
+            $this->removeOrder($reference);
+
             // notify something went wrong
             return response()->json('failed to load payment page',400);
         }
 
-        return redirect($payment['data']['checkout_url']);
+        return($payment['data']['checkout_url']);
     }
 
     /**
@@ -86,22 +108,18 @@ class ChapaController extends Controller
     {
         
         $data = Chapa::verifyTransaction($reference);
-       // dd($data);
+      //  dd($data);
 
         //if payment is successful
         if ($data['status'] ==  'success') {
         
-            $this->orderProduct($data,$reference);
-        //     $order_status=OrderStatus::where('status_name','paid')->first();
-        //     $order= Order::find($reference);
-        //     $order->order_status_id=$order_status->id;
-        //     $order->save();
+            return redirect(url(env('FRONTEND_USER_URL')).'/order-confirm');
 
-        // dd($data);
         }
 
         else{
             //oopsie something ain't right.
+            $this->removeOrder($reference);
             return response()->json('failed to verify payment',400);
         }
 
@@ -109,27 +127,33 @@ class ChapaController extends Controller
     }
 
 
-    private function orderProduct($data,$reference){
+    private function removeOrder($reference){
+        $order=Order::where('transaction_id',$reference)->first();
+        $order_addr= OrderAddress::find($order->order_address_id);
+        if($order_addr->orders()->count() == 1){
+         $order->order_address_id=null;
+         $order->save();
+         $order_addr->delete();
+        }
+
+        $order->order_items()->delete();
+        $order->delete();
+
+    }
+    private function orderProduct(Request $request,$reference){
         
-        // $order=Order::where('user_id',$request->user_id)->where('status','pending')->get();
-  //    try {
-  //     DB::beginTransaction();
-  //     DB::commit();
-  //    } catch (\Throwable $th) {
-  //     //throw $th;
-  //     DB::rollBack();
-  //    }
-    return $data;
-     $request=request();
-     $user= $request->user();
+     try {
+      DB::beginTransaction();
+
      $order=new Order();
      $order->pin=rand(1000,9999);
      $order->pickup_date=date('Y-m-d',strtotime($request->pickup_date));
      $order->user_id=$request->user_id;
      $order->order_status_id=OrderStatus::where('status_name','paid')->first()->id;
-     $order->payment_type_id=$request->payment_methode;
+     $order->payment_type_id=$request->payment_method;
      $order->shop_id=$request->shop_id;
-  //   ret Str::random(10)
+     $order->transaction_id=$reference;
+      //   ret Str::random(10)
      
      $orderItems=$request->products;
      $totalPrice=0;
@@ -169,8 +193,12 @@ class ChapaController extends Controller
 
        }
         
-       return $order->id;
-          
+      // return $order->id;
+       DB::commit();
+    } catch (\Throwable $th) {
+     return $th;
+     DB::rollBack();
+    }         
 
   }
 }
