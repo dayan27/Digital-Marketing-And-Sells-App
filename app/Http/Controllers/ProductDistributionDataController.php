@@ -37,7 +37,7 @@ class ProductDistributionDataController extends Controller
        $productDistributionData=[];
        foreach($products as $product){
          
-        $p=Product::find($product['product_id']);
+        $p=Product::find($product['product_id']); 
          $pendeng_pro=ProductDistributionData::
                         where('product_id',$product['product_id'])
                         ->where('status','pending')

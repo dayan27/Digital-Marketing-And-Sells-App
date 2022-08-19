@@ -108,10 +108,11 @@ class SystemUserController extends Controller
      */
     public function destroy($id)
     {
-    //    $phone_numbers= $manager->phone_numbers;
-    //    foreach(){
+  
         $manager=Manager::find($id);
-        $manager->phone_numbers()->delete();
+        $manager->phone_numbers()->delete();  
+        $manager->account()->delete();
+
         $manager->delete();
         return response()->json('sucessfully deleted',200);
     }

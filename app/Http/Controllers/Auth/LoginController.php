@@ -47,7 +47,7 @@ class LoginController extends Controller
         $check=Hash::check($request->password, $user_acc->password);
         if (! $check ) {
             return response()->json([
-                'message'=>' incorrect  password',
+                'message'=>' incorrect password',
                 ]
                ,404 );
         }
